@@ -214,18 +214,19 @@
         .modal-title { color: var(--heading-color); font-weight: 900; margin: 0; font-size: 18px;}
         .modal-body { padding: 20px 25px; overflow-y: auto; color: var(--text); font-size: 15.5px; line-height: 1.6; font-weight: 600; }
 
+        /* ALIŞVERİŞ LİSTESİ EDİTLENEBİLİR STİLLER */
         .shopping-row {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex; align-items: flex-start; justify-content: space-between;
             margin-bottom: 10px; border-bottom: 1px dashed rgba(139, 90, 43, 0.2);
             padding-bottom: 8px; transition: 0.3s;
         }
-        .shopping-item-check { display: flex; align-items: center; gap: 10px; cursor: pointer; flex-grow: 1; font-weight: 700;}
-        .shopping-item-check input { width: 18px; height: 18px; accent-color: var(--primary); }
+        .shopping-item-check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; flex-grow: 1; font-weight: 700;}
+        .shopping-item-check input { width: 18px; height: 18px; accent-color: var(--primary); margin-top: 3px;}
         .shopping-item-check input:checked + span { text-decoration: line-through; opacity: 0.5; }
         
         .delete-item-btn {
             background: var(--delete-red); color: white; border: 2px solid var(--wood-border);
-            border-radius: 6px; width: 28px; height: 28px; cursor: pointer;
+            border-radius: 6px; min-width: 28px; height: 28px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; font-size: 12px;
             margin-left: 10px; transition: 0.2s; box-shadow: 0 2px 0px var(--wood-border);
         }
@@ -256,7 +257,7 @@
         }
         .month-btn:hover { background: var(--secondary); color: white; }
 
-        /* YENİ: UÇAN PERİLER (EASTER EGG) */
+        /* UÇAN PERİLER (EASTER EGG) */
         .floating-fairy {
             position: fixed; font-size: 45px; z-index: 9999; pointer-events: none;
             animation: floatGentle 2s ease-in-out infinite alternate;
@@ -402,12 +403,10 @@
             f.style.animationDelay = (Math.random() * 1) + "s";
             document.body.appendChild(f);
             
-            // 3 saniye sonra süzülmeyi durdur, hızla yukarı fırlat
             setTimeout(() => {
                 f.style.animation = "none";
                 f.style.transition = "top 1.2s cubic-bezier(0.5, 0, 1, 1), transform 1.2s";
                 
-                // Yıldız çıkarma efekti
                 let starInterval = setInterval(() => {
                     let rect = f.getBoundingClientRect();
                     if (rect.top < -50) { clearInterval(starInterval); return; }
@@ -421,7 +420,6 @@
                 }, 80);
 
                 setTimeout(() => { f.style.top = "-100px"; f.style.transform = "scale(1.5)"; }, 50);
-
                 setTimeout(() => { f.remove(); clearInterval(starInterval); }, 1500);
             }, 3000 + (Math.random() * 1000));
         }
@@ -445,6 +443,66 @@
             "Ağırlık (Hafif)": "Kaslara sadece kan pompalayarak onarımı hızlandırmayı amaçlayan, eklemleri yormayan düşük ağırlıklı çalışma." 
         }
     };
+
+    // --- USTA İŞİ KATEGORİLİ SABİT PAZAR LİSTESİ ---
+    const masterShoppingList = [
+        {
+            category: "🥩 1. KASAP VE PROTEİN REYONU (Hücre ve Kas İnşası)",
+            items: [
+                "Tavuk Göğsü: Tam 600 gram (3 akşam yemeği x 200g olarak bölünecek)",
+                "Yağsız Dana Kıyma: Tam 600 gram (3 akşam yemeği x 200g. Tek çekim, ekstra yağsız)",
+                "Yumurta: 15'li Paket (Haftada toplam 9-10 adet tüketiyorsun, M boy, mümkünse serbest gezen/Omega-3 destekli)"
+            ]
+        },
+        {
+            category: "🧀 2. PEYNİR VE SÜT ÜRÜNLERİ (Kalsiyum ve Lösin)",
+            items: [
+                "Taze Mozzarella: 2 Top (Toplam 200-250g suyu süzülmüş net ağırlık)",
+                "Ricotta Peyniri: 1 Kutu (250g) (Sadece kahvaltılarda 3-4 ymk kaşığı)",
+                "Robiola Peyniri: 1 Küçük Paket (100g) (Sadece 30 gramı kullanılacak, kalanı yedek)",
+                "Fiocchi di Latte (İtalyan Loru): 1 Kutu (200g) (Omlet için 80-100 gramı kullanılacak)",
+                "Az Yağlı Beyaz Peynir: 1 Küçük Kalıp (200-250g) (Sadece 1 gün 60g tüketilecek)",
+                "Süzme Yoğurt (Yogurt Greco): 1 Büyük Kova (750g - 1 kg) (Ara öğünler ve cacık için haftalık net ~700g tüketim)",
+                "Yüksek Proteinli Yoğurt (Hipro vb.): 1 Kutu (150g) (Sadece muzlu kinoa ara öğünü için)"
+            ]
+        },
+        {
+            category: "🥑 3. MANAV VE YEŞİLLİK (Lif ve Detoks)",
+            items: [
+                "Avokado: 3 Adet (Toplam ~500g. Haftada 4 yarım (2 tam) yiyorsun, 1 tane yedek kalsın)",
+                "Patlıcan: 4 Adet Orta Boy (Toplam ~800g - 1 kg)",
+                "Salkım Domates: 5-6 Adet (Toplam ~600g)",
+                "Çeri Domates: 1 Küçük Paket (~250g)",
+                "Biber Grubu: 4 adet Sivri/Çarliston Biber + 2 adet Kırmızı Kapya Biber",
+                "Salatalık: 4-5 Adet (~400g)",
+                "Diğer Sebzeler: 1 adet Kabak, 1 adet Havuç, Taze Fasulye (~300g), Kuru Soğan (500g), Sarımsak (1 baş)",
+                "Yeşillikler (1'er Bağ): Taze Fesleğen, Taze Nane, Roka (2 bağ), Taze Ispanak Yaprağı (~150g)",
+                "Limon: 5-6 Adet (Demir emilimi için bolca sıkılacak)"
+            ]
+        },
+        {
+            category: "🍓 4. MEYVE REYONU (Kontrollü Fruktoz)",
+            items: [
+                "Kırmızı Meyveler: 1 Kutu Çilek (~250g) + 1 Kutu Yaban Mersini (~125g)",
+                "Elma & Armut: 2 adet Yeşil Elma + 1 adet Armut",
+                "Tropikal: 1 adet Taze Ananas + 2 adet Yerli Muz + 2 adet Kivi + 1 adet Portakal"
+            ]
+        },
+        {
+            category: "🌾 5. KİLER, KURU GIDA VE KURUYEMİŞ (Kompleks Yakıtlar)",
+            items: [
+                "Tam Tahıllı Ekmek: 1 Somun/Paket Tam Buğday veya Çavdar (Haftalık tüketim 8-9 dilim. Dilimli alıp buzluğa atın)",
+                "Yeşil Mercimek: Haftalık tüketim ~150g (çiğ)",
+                "Sade Bulgur: Haftalık tüketim ~50g (çiğ)",
+                "Kinoa: Haftalık tüketim ~45g (çiğ)",
+                "Tam Buğday İtalyan Makarnası (Penne): Haftalık tüketim ~100g (çiğ)",
+                "Kuruyemişler: Çiğ Badem (15 adet), Çiğ Kaju (15 adet), Tam Ceviz İçi (6 adet)",
+                "Tohumlar: Chia Tohumu (Haftalık 10g), Taze Çekilmiş Keten Tohumu (Haftalık 5-10g)",
+                "Zeytin: Yeşil ve Siyah Zeytin (Haftalık toplam ~100g tüketim)",
+                "Sıvı & Soslar: Sızma Zeytinyağı (~60ml), Domates Püresi/Passata (1 Cam Şişe ~300g), Elma Sirkesi"
+            ]
+        }
+    ];
 
     const brunches = [ 
         { name: "Yemek 1: Mozzarella & Avokado A", kcal: 450, pro: 25, fat: 30, carb: 20, text: "<p>1 adet tam haşlanmış yumurta. 1 tam top taze Mozzarella di Bufala. Üzerine taze sıkılmış limon suyu eklenmiş yarım avokado. Yanında 1 ince dilim tam buğday ekmeği, taze fesleğen ve çeri domates.</p>", ing: "• 1 tam yumurta (~50g)<br>• 1 top taze Mozzarella (~100g)<br>• Yarım avokado (~70g)<br>• 1 dilim tam buğday ekmeği (~30g)<br>• Serbest: Limon, fesleğen, domates" }, 
@@ -598,114 +656,28 @@
         }
     }
 
-    // --- YAPAY ZEKA DESTEKLİ ALIŞVERİŞ BİRLEŞTİRİCİ ---
-    const ingredientDict = [
-        { match: /yumurta/i, name: "Yumurta", unit: "adet" },
-        { match: /avokado/i, name: "Avokado", unit: "adet" },
-        { match: /mozzarella/i, name: "Taze Mozzarella", unit: "g" },
-        { match: /ricotta/i, name: "Ricotta Peyniri", unit: "g" },
-        { match: /robiola/i, name: "Robiola Peyniri", unit: "g" },
-        { match: /italyan loru/i, name: "İtalyan Loru", unit: "g" },
-        { match: /beyaz peynir/i, name: "Beyaz Peynir", unit: "g" },
-        { match: /tam buğday ekmeği/i, name: "Tam Buğday Ekmeği", unit: "dilim" },
-        { match: /çavdar ekmeği/i, name: "Çavdar Ekmeği", unit: "dilim" },
-        { match: /karabuğday ekmeği/i, name: "Karabuğday Ekmeği", unit: "dilim" },
-        { match: /zeytinyağı/i, name: "Zeytinyağı", unit: "g" },
-        { match: /yeşil zeytin/i, name: "Yeşil Zeytin", unit: "adet" },
-        { match: /siyah zeytin/i, name: "Siyah Zeytin", unit: "adet" },
-        { match: /ıspanak/i, name: "Taze Ispanak", unit: "g" },
-        { match: /kapya biber|yeşil biber/i, name: "Biber Çeşitleri", unit: "adet" },
-        { match: /süzme yoğurt/i, name: "Süzme Yoğurt", unit: "g" },
-        { match: /ev yoğurdu|normal yoğurt/i, name: "Normal Yoğurt", unit: "g" },
-        { match: /proteinli yoğurt/i, name: "Yüksek Proteinli Yoğurt", unit: "kutu" },
-        { match: /çilek|yaban mersini|orman meyve/i, name: "Orman Meyveleri", unit: "g" },
-        { match: /chia tohumu/i, name: "Chia Tohumu", unit: "g" },
-        { match: /keten tohumu/i, name: "Keten Tohumu", unit: "g" },
-        { match: /ananas/i, name: "Taze Ananas", unit: "g" },
-        { match: /ceviz/i, name: "Ceviz İçi", unit: "adet" },
-        { match: /yeşil elma/i, name: "Yeşil Elma", unit: "adet" },
-        { match: /badem/i, name: "Çiğ Badem", unit: "adet" },
-        { match: /kinoa/i, name: "Kinoa", unit: "g" },
-        { match: /muz/i, name: "Muz", unit: "adet" },
-        { match: /kivi|portakal/i, name: "Kivi & Portakal", unit: "g" },
-        { match: /kaju/i, name: "Çiğ Kaju", unit: "adet" },
-        { match: /armut/i, name: "Armut", unit: "adet" },
-        { match: /tavuk/i, name: "Tavuk Göğsü", unit: "g" },
-        { match: /kıyma/i, name: "Yağsız Dana Kıyma", unit: "g" },
-        { match: /bulgur/i, name: "Sade Bulgur", unit: "g" },
-        { match: /makarna|penne/i, name: "Tam Buğday Makarna", unit: "g" },
-        { match: /patlıcan/i, name: "Patlıcan", unit: "g" }, 
-        { match: /domates püresi|passata/i, name: "Domates Püresi", unit: "g" },
-        { match: /salça/i, name: "Domates Salçası", unit: "g" },
-        { match: /köfte/i, name: "Ev Yapımı Köfte (Kıymadan)", unit: "g" },
-        { match: /yeşil mercimek/i, name: "Yeşil Mercimek", unit: "g" },
-        { match: /taze fasulye/i, name: "Taze Fasulye", unit: "g" },
-        { match: /kabak|havuç|wok/i, name: "Karışık Wok Sebze", unit: "g" }
-    ];
-
-    function aggregateShoppingList(rawItems) {
-        let agg = {};
+    // --- USTA LİSTESİ RENDERLAYICI ---
+    function openShoppingList() {
+        let html = '<div id="shoppingChecklist">';
+        let rowId = 0;
         
-        rawItems.forEach(item => {
-            if(item.toLowerCase().includes("serbest")) return; 
-            
-            let foundCat = null;
-            for(let cat of ingredientDict) {
-                if(cat.match.test(item)) { foundCat = cat; break; }
-            }
-            
-            let qty = 1;
-            let unit = foundCat ? foundCat.unit : "";
-            
-            let mGrams = item.match(/\(~?(\d+)\s*g/i);
-            if(mGrams) {
-                qty = parseInt(mGrams[1]);
-                unit = "g"; 
-            } else {
-                let numMatch = item.match(/^(\d+(?:\.\d+)?)/) || item.match(/(\d+)/);
-                if(numMatch) qty = parseFloat(numMatch[1]);
-                if(item.toLowerCase().includes('yarım')) qty = 0.5;
-            }
-
-            let catName = foundCat ? foundCat.name : item.replace(/~?\d+g/g, '').replace(/[()•]/g, '').trim();
-
-            if(!agg[catName]) agg[catName] = { total: 0, unit: unit };
-            agg[catName].total += qty;
-            if(unit === 'g') agg[catName].unit = 'g';
-        });
-
-        let h = '<div id="shoppingChecklist">';
-        Object.keys(agg).sort().forEach((key, idx) => {
-            let val = agg[key].total;
-            let unit = agg[key].unit;
-            let displayUnit = (unit === "adet" || unit === "porsiyon" || !unit) ? "" : unit;
-            let text = `${val}${displayUnit ? ' ' + displayUnit : ''} - ${key}`;
-            
-            h += `
-                <div class="shopping-row" id="shop-row-${idx}">
+        masterShoppingList.forEach(cat => {
+            html += `<h4 style="color:var(--heading-color); margin: 15px 0 10px 0; border-bottom: 2px dashed var(--wood-border); padding-bottom:5px; font-weight:900;">${cat.category}</h4>`;
+            cat.items.forEach(item => {
+                html += `
+                <div class="shopping-row" id="shop-row-${rowId}">
                     <label class="shopping-item-check">
                         <input type="checkbox"> 
-                        <span class="shop-item-text">${text}</span>
+                        <span class="shop-item-text">${item}</span>
                     </label>
-                    <button class="delete-item-btn" onclick="removeShoppingRow(${idx})">❌</button>
+                    <button class="delete-item-btn" onclick="removeShoppingRow(${rowId})">❌</button>
                 </div>`;
-        });
-        h += '</div><button class="copy-btn" onclick="copyShoppingListText()">📋 Kalanları Kopyala</button>';
-        return h;
-    }
-
-    function openShoppingList() {
-        let allIngredients = [];
-        for (let i = currentDayIndex; i < Math.min(currentDayIndex + 7, planData.length); i++) {
-            const d = planData[i];
-            [brunches[d.b], snacks[d.s], dinners[d.d]].forEach(meal => {
-                if(meal && meal.ing) {
-                    let items = meal.ing.split('<br>').map(it => it.replace('•', '').trim());
-                    allIngredients.push(...items);
-                }
+                rowId++;
             });
-        }
-        showModal("🛒 Düzenlenebilir Pazar Listesi", aggregateShoppingList(allIngredients));
+        });
+        
+        html += '</div><button class="copy-btn" onclick="copyShoppingListText()">📋 Kalanları Kopyala</button>';
+        showModal("🛒 Haftalık Usta Pazar Listesi", html);
     }
 
     function removeShoppingRow(id) {
@@ -715,10 +687,18 @@
     }
 
     function copyShoppingListText() {
-        let text = "🛒 Haftalık Pazar Listesi:\n\n";
-        document.querySelectorAll(".shopping-row .shop-item-text").forEach(span => {
-            text += "⬜ " + span.innerText + "\n";
+        let text = "🛒 Haftalık Usta Pazar Listesi:\n\n";
+        
+        const checklist = document.getElementById("shoppingChecklist");
+        Array.from(checklist.children).forEach(child => {
+            if(child.tagName === "H4") {
+                text += "\n" + child.innerText + "\n";
+            } else if (child.classList.contains("shopping-row")) {
+                const span = child.querySelector(".shop-item-text");
+                text += "⬜ " + span.innerText + "\n";
+            }
         });
+
         navigator.clipboard.writeText(text).then(() => {
             alert("Liste kopyalandı! WhatsApp'a yapıştırabilirsin.");
         });
