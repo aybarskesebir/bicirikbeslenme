@@ -3,270 +3,897 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Canan - İnteraktif Makro & Dönüşüm Planı</title>
+    <title>Damla'nın Programı - İnteraktif Takip</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #4A7C59; 
-            --secondary: #E85D04; 
-            --bg: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --text: #2B2D42;
-            --macro-pro: #0077B6;
-            --macro-fat: #D00000;
-            --macro-carb: #F4A261;
-            --macro-kcal: #2D6A4F;
-            --ing-bg: #E9ECEF;
-            --ing-border: #6C757D;
-            --ing-text: #495057;
-            --ing-title: #343A40;
-            --nav-bg: #EDF2F4;
-            --nav-border: #DFE3E6;
+            --primary: #557A46; 
+            --primary-hover: #3A5A2D;
+            --secondary: #D08C60; 
+            --bg: #F3EFE0; 
+            --card-bg: #FFFDF7; 
+            --text: #433D3C; 
+            --macro-pro: #5B8A72;
+            --macro-fat: #C06C53;
+            --macro-carb: #E3B23C;
+            --macro-kcal: #4A6741;
+            --wood-border: #8B5A2B; 
+            --heading-color: #7A4B20;
+            --ing-bg: #EAE6D7;
+            --ing-border: #D08C60;
+            --calendar-active: #557A46;
+            --delete-red: #C06C53;
         }
 
-        /* Dark Mode Renk Paleti */
         :root[data-theme="dark"] {
-            --primary: #528a63; 
-            --secondary: #ff7315; 
-            --bg: #121212;
-            --card-bg: #1E1E1E;
-            --text: #E0E0E0;
-            --ing-bg: #2A2A2A;
-            --ing-border: #4A7C59;
-            --ing-text: #B0B0B0;
-            --ing-title: #FFFFFF;
-            --nav-bg: #2C2C2C;
-            --nav-border: #3D3D3D;
+            --primary: #4A6741; 
+            --primary-hover: #354A2E;
+            --secondary: #B56B3F; 
+            --bg: #2C2621; 
+            --card-bg: #3E352F; 
+            --text: #F3EFE0;
+            --wood-border: #1E1A16;
+            --heading-color: #E4B58A;
+            --ing-bg: #2C2621;
+            --ing-border: #8B5A2B;
+            --calendar-active: #B56B3F;
+            --delete-red: #D67A60;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Nunito', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center;
             transition: background-color 0.3s, color 0.3s;
+            background-image: radial-gradient(var(--wood-border) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
         }
+
         .app-container {
-            max-width: 650px;
-            width: 100%;
+            max-width: 650px; width: 100%;
             background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: background-color 0.3s;
+            border-radius: 24px; border: 4px solid var(--wood-border);
+            box-shadow: 6px 6px 0px rgba(139, 90, 43, 0.15);
+            overflow: hidden; position: relative;
         }
+
         .header {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            text-align: center;
+            background: var(--primary); color: #FFFDF7;
+            padding: 25px 20px; text-align: center;
+            border-bottom: 4px solid var(--wood-border);
             position: relative;
         }
-        .header h1 { margin: 0; font-size: 24px; }
-        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+        .header h1 { 
+            margin: 0; font-size: 26px; font-weight: 900; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .fairy-icon { cursor: pointer; user-select: none; font-size: 32px; transition: 0.2s; }
+        .fairy-icon:active { transform: scale(0.8); }
+        .header p { margin: 5px 0 0 0; font-size: 15px; font-weight: 600; opacity: 0.9; color: #FFFDF7; }
         
         .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.4);
+            color: white; padding: 6px 12px; border-radius: 12px;
+            cursor: pointer; font-size: 13px; font-weight: bold; font-family: 'Nunito';
         }
-        .theme-toggle:hover { background: rgba(255,255,255,0.3); }
 
-        .nav-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: var(--nav-bg);
-            border-bottom: 2px solid var(--nav-border);
-            transition: background-color 0.3s, border-color 0.3s;
+        .calendar-wrapper {
+            background: var(--ing-bg); padding: 15px 20px;
+            border-bottom: 3px dashed var(--wood-border);
         }
-        button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
+        .calendar-header-nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 15px; background: var(--card-bg); padding: 10px 15px;
+            border-radius: 12px; border: 2px solid var(--wood-border);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
-        button:hover { background: #3a6347; }
-        button:disabled { background: #A0B2A6; cursor: not-allowed; }
-        select.day-select {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-weight: bold;
-            color: var(--text);
-            background-color: var(--card-bg);
-            max-width: 50%;
+        .calendar-header-nav button {
+            background: var(--secondary); color: white; border: 2px solid var(--wood-border);
+            padding: 6px 14px; border-radius: 8px; font-weight: 900; cursor: pointer;
+            box-shadow: 0 3px 0px var(--wood-border); transition: 0.1s;
         }
-        .content { padding: 20px; }
-        .badges {
-            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
-        }
-        .badge {
-            padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white;
-        }
-        .badge-phase { background: var(--secondary); }
-        .badge-workout { background: #118AB2; }
+        .calendar-header-nav button:active { transform: translateY(3px); box-shadow: none; }
+        .calendar-month-title { font-size: 18px; font-weight: 900; color: var(--heading-color); cursor: pointer; padding: 5px 10px; border-radius: 8px; transition: 0.2s; }
+        .calendar-month-title:hover { background: rgba(139, 90, 43, 0.1); }
         
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .cal-day-name { text-align: center; font-size: 11px; font-weight: 900; color: var(--heading-color); opacity: 0.8; padding-bottom: 4px; }
+        .cal-day {
+            height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--card-bg); border: 2px solid rgba(139, 90, 43, 0.2);
+            border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 14px;
+            position: relative; transition: 0.2s; padding: 2px;
+        }
+        .cal-day.active { background: var(--calendar-active); color: white; border-color: var(--wood-border); box-shadow: 0 2px 0px var(--wood-border); }
+        .cal-water-mark { font-size: 11px; position: absolute; bottom: 0px; left: 3px; }
+        .cal-cart-mark { font-size: 12px; position: absolute; top: -2px; right: 2px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2)); }
+
+        .content { padding: 25px; }
+        
+        .badges { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center;}
+        .badge {
+            padding: 8px 14px; border-radius: 12px; font-size: 14px; font-weight: 800; color: white; 
+            display: flex; align-items: center; gap: 6px; border: 2px solid var(--wood-border);
+            cursor: pointer; transition: 0.2s;
+        }
+        .badge:hover { transform: scale(1.05); }
+        .badge-phase { background: var(--secondary); }
+        .badge-workout { background: var(--primary); }
+        .info-icon {
+            background: rgba(255,255,255,0.4); border-radius: 50%; width: 20px; height: 20px; 
+            display: inline-flex; align-items: center; justify-content: center; font-size: 12px;
+            color: var(--text);
+        }
+
         .meal-card {
-            background: var(--card-bg);
-            border-left: 5px solid var(--primary);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 0 10px 10px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: var(--card-bg); border: 3px solid var(--wood-border);
+            padding: 18px; margin-bottom: 18px; border-radius: 16px;
+            box-shadow: 4px 4px 0px rgba(139, 90, 43, 0.1); position: relative;
         }
-        .meal-card h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 16px; }
+        .meal-card::before { content: "📍"; position: absolute; top: -10px; left: -10px; font-size: 20px; }
+        .meal-card h3 { margin: 0 0 12px 0; color: var(--heading-color); font-size: 18px; font-weight: 900; }
         .module-select {
-            width: 100%; padding: 8px; margin-bottom: 12px; border-radius: 6px;
-            border: 1px solid #ccc; font-family: inherit; background-color: var(--card-bg);
-            font-weight: bold; color: var(--text);
+            width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 10px;
+            border: 2px solid var(--wood-border); background-color: var(--card-bg); font-weight: 800; font-family: 'Nunito'; color: var(--text);
         }
-        .meal-card p { margin: 0 0 12px 0; font-size: 14.5px; line-height: 1.6; color: var(--text); opacity: 0.9; }
-        .macro-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-        .macro-badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; color: white; }
-        .m-pro { background: var(--macro-pro); }
-        .m-fat { background: var(--macro-fat); }
-        .m-carb { background: var(--macro-carb); }
-        .m-kcal { background: var(--macro-kcal); }
+        .meal-card p { margin: 0 0 15px 0; font-size: 15px; line-height: 1.6; font-weight: 600;}
         
         .ingredients-list {
-            background-color: var(--ing-bg);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            color: var(--ing-text);
-            border-left: 3px solid var(--ing-border);
-            transition: background-color 0.3s;
+            background-color: var(--ing-bg); padding: 12px; border-radius: 10px;
+            border: 2px dashed var(--ing-border); font-weight: 600; font-size: 15px; color: var(--text);
         }
-        .ingredients-list strong { color: var(--ing-title); display: block; margin-bottom: 8px; }
+        .ingredients-list strong { color: var(--heading-color); display: block; margin-bottom: 10px; font-size: 16px;}
+        .ingredient-item { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; }
+        .ingredient-item input { margin-right: 12px; accent-color: var(--primary); width: 18px; height: 18px; }
+        .ingredient-item.checked { text-decoration: line-through; opacity: 0.6; }
 
-        /* Checkbox Stilleri */
-        .ingredient-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 8px;
-            cursor: pointer;
-            line-height: 1.4;
-            transition: opacity 0.2s;
+        .iron-highlight-box {
+            background: linear-gradient(135deg, #FFF3E0, #FDE0B2);
+            border: 2px dashed var(--delete-red); border-radius: 12px; padding: 12px;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+            font-weight: 900; color: var(--heading-color);
+            box-shadow: 0 4px 0px rgba(192, 108, 83, 0.2);
+            animation: pulse-glow 2s infinite alternate;
         }
-        .ingredient-item input {
-            margin-right: 10px;
-            margin-top: 3px;
-            cursor: pointer;
-            accent-color: var(--primary);
-            width: 16px;
-            height: 16px;
-        }
-        .ingredient-item.checked {
-            text-decoration: line-through;
-            opacity: 0.5;
-        }
+        [data-theme="dark"] .iron-highlight-box { background: linear-gradient(135deg, #4A2B23, #5A352A); color: #FFDBCF; }
+        @keyframes pulse-glow { 0% { box-shadow: 0 0 0px rgba(192, 108, 83, 0.2); } 100% { box-shadow: 0 0 10px rgba(192, 108, 83, 0.6); } }
+        .iron-icon { font-size: 26px; }
 
-        .total-summary {
-            background: #EAE2B7; padding: 15px; border-radius: 10px; margin-top: 20px;
-            text-align: center; border: 2px solid #D4A373;
+        .tracker-section {
+            background: var(--ing-bg); border-radius: 16px; padding: 20px;
+            margin-top: 25px; text-align: center; border: 3px solid var(--wood-border);
         }
-        [data-theme="dark"] .total-summary { background: #3A3022; border-color: #8C6A4A; }
-        .total-summary h3 { margin: 0 0 10px 0; color: #2B2D42; }
-        [data-theme="dark"] .total-summary h3 { color: #E0E0E0; }
-        .total-summary .macro-row { justify-content: center; }
-        .total-summary .macro-badge { font-size: 14px; padding: 6px 12px; }
+        .tracker-title { font-weight: 900; color: var(--heading-color); margin-bottom: 15px; display: block; font-size: 16px;}
+        .water-grid { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; z-index: 2; position: relative;}
+        .water-drop { font-size: 28px; cursor: pointer; filter: grayscale(1); transition: 0.2s; transform: scale(0.9);}
+        .water-drop.active { filter: grayscale(0); transform: scale(1.1); }
 
-        .supp-highlight {
-            display: inline-block; background-color: #ffe8d6; color: #d00000;
-            padding: 3px 8px; border-radius: 5px; font-weight: bold; margin-top: 8px; border: 1px solid #ffb5a7;
+        .gerbera-container {
+            display: none; justify-content: center; align-items: center; flex-direction: column;
+            margin-top: 15px; padding-top: 15px; border-top: 2px dashed rgba(139, 90, 43, 0.3);
+            animation: bloom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
-        [data-theme="dark"] .supp-highlight { background-color: #4A1C1C; color: #FFB5A7; border-color: #8A3030; }
+        .gerbera-flower { font-size: 60px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2)); }
+        @keyframes bloom { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+
+        .supp-grid { display: flex; justify-content: center; gap: 20px; font-size: 16px; font-weight: 800; flex-wrap: wrap;}
+        .supp-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .supp-item input { accent-color: var(--secondary); width: 20px; height: 20px; }
+
+        .shopping-list-trigger {
+            background: var(--secondary); color: white; width: 100%; border: 3px solid var(--wood-border);
+            padding: 15px; border-radius: 12px; margin-bottom: 25px; cursor: pointer;
+            font-weight: 900; display: none; font-size: 16px; font-family: 'Nunito';
+            box-shadow: 0 4px 0px var(--wood-border); transition: 0.2s;
+        }
+        .shopping-list-trigger:active { transform: translateY(4px); box-shadow: none; }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 38, 33, 0.8); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--bg); border-radius: 20px;
+            max-width: 85%; width: 450px; max-height: 80vh;
+            display: flex; flex-direction: column; padding: 0;
+            position: relative; border: 4px solid var(--wood-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-header-fixed {
+            padding: 20px 25px 15px; border-bottom: 3px dashed var(--wood-border);
+            background: var(--bg); border-radius: 16px 16px 0 0; position: relative;
+        }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; color: var(--wood-border); cursor: pointer; font-weight: 900; }
+        .modal-title { color: var(--heading-color); font-weight: 900; margin: 0; font-size: 18px;}
+        .modal-body { padding: 20px 25px; overflow-y: auto; color: var(--text); font-size: 15.5px; line-height: 1.6; font-weight: 600; }
+
+        .shopping-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; border-bottom: 1px dashed rgba(139, 90, 43, 0.2);
+            padding-bottom: 8px; transition: 0.3s;
+        }
+        .shopping-item-check { display: flex; align-items: center; gap: 10px; cursor: pointer; flex-grow: 1; font-weight: 700;}
+        .shopping-item-check input { width: 18px; height: 18px; accent-color: var(--primary); }
+        .shopping-item-check input:checked + span { text-decoration: line-through; opacity: 0.5; }
         
-        .water-reminder {
-            text-align: center; margin-top: 20px; padding: 15px; background: #E0FBFC;
-            border-radius: 10px; font-weight: bold; color: #0077B6;
+        .delete-item-btn {
+            background: var(--delete-red); color: white; border: 2px solid var(--wood-border);
+            border-radius: 6px; width: 28px; height: 28px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 12px;
+            margin-left: 10px; transition: 0.2s; box-shadow: 0 2px 0px var(--wood-border);
         }
-        [data-theme="dark"] .water-reminder { background: #0A2E3F; color: #66B2FF; }
+        .delete-item-btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .copy-btn {
+            width: 100%; background: var(--primary); color: white; border: 3px solid var(--wood-border);
+            padding: 12px; border-radius: 10px; font-weight: 900; cursor: pointer; font-family: 'Nunito';
+            margin-top: 15px; font-size: 15px; box-shadow: 0 4px 0px var(--wood-border);
+        }
+
+        .macro-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; justify-content: center; }
+        .macro-badge { padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 900; color: white; border: 2px solid rgba(0,0,0,0.15);}
+        .m-pro { background: var(--macro-pro); } .m-fat { background: var(--macro-fat); }
+        .m-carb { background: var(--macro-carb); } .m-kcal { background: var(--macro-kcal); }
+        
+        .total-summary {
+            background: var(--primary); padding: 20px; border-radius: 16px; margin-top: 25px;
+            text-align: center; border: 3px solid var(--wood-border); color: white;
+            box-shadow: 4px 4px 0px rgba(139, 90, 43, 0.2);
+        }
+        .total-summary h3 { margin: 0 0 15px 0; color: white; font-weight: 900;}
+        
+        .month-btn {
+            display: block; width: 100%; background: var(--ing-bg); border: 2px solid var(--wood-border);
+            padding: 10px; margin-bottom: 10px; border-radius: 8px; font-weight: 800; font-family: 'Nunito';
+            color: var(--text); cursor: pointer; transition: 0.2s;
+        }
+        .month-btn:hover { background: var(--secondary); color: white; }
+
+        /* YENİ: UÇAN PERİLER (EASTER EGG) */
+        .floating-fairy {
+            position: fixed; font-size: 45px; z-index: 9999; pointer-events: none;
+            animation: floatGentle 2s ease-in-out infinite alternate;
+        }
+        .fairy-star {
+            position: fixed; font-size: 18px; color: #FFD700; z-index: 9998; pointer-events: none;
+            animation: starFade 0.8s forwards ease-out;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+        }
+        @keyframes floatGentle {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-20px) scale(1.05); }
+        }
+        @keyframes starFade {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.5) translateY(20px); }
+        }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="header">
-        <h1>Dr. Canan İnteraktif Takip</h1>
+        <h1><span class="fairy-icon" onclick="triggerFairy()">🧚‍♀️</span> Damla'nın Programı</h1>
         <p>Lipit Düşürücü & Hipertrofi Odaklı Biyokimya Mutfağı</p>
         <button class="theme-toggle" onclick="toggleTheme()">🌙 Gece</button>
     </div>
     
-    <div class="nav-controls">
-        <button id="prevBtn" onclick="changeDay(-1)">&#8592; Önceki</button>
-        <select id="daySelector" class="day-select" onchange="jumpToDay()"></select>
-        <button id="nextBtn" onclick="changeDay(1)">Sonraki &#8594;</button>
+    <div class="calendar-wrapper">
+        <div class="calendar-header-nav">
+            <button onclick="changeDay(-1)">&#8592; Dün</button>
+            <h3 class="calendar-month-title" id="calendarMonthTitle" onclick="openMonthModal()">Nisan 2026 ▾</h3>
+            <button onclick="changeDay(1)">Yarın &#8594;</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
     <div class="content">
+        <button id="shopListBtn" class="shopping-list-trigger" onclick="openShoppingList()">
+            🛒 Haftalık Pazar Listesi Hazır!
+        </button>
+
         <div class="badges">
-            <div class="badge badge-phase" id="phaseBadge">Faz 1: Adaptasyon</div>
-            <div class="badge badge-workout" id="workoutBadge">Ağırlık Antrenmanı</div>
+            <div class="badge badge-phase" onclick="openModal('phase')">
+                <span id="phaseBadgeText">Faz 1</span>
+                <span class="info-icon">?</span>
+            </div>
+            <div class="badge badge-workout" onclick="openModal('workout')">
+                <span id="workoutBadgeText">Antrenman</span>
+                <span class="info-icon">?</span>
+            </div>
         </div>
 
-        <div class="meal-card">
-            <h3>🥑 Geç Kahvaltı / Brunch (~11:30)</h3>
-            <select id="brunchSelect" class="module-select" onchange="updateMeal('brunch')"></select>
-            <p id="brunchText"></p>
-            <div class="macro-row" id="brunchMacros"></div>
-            <div class="ingredients-list" id="brunchIngredients"></div>
+        <div id="mealsContainer">
+            <div class="meal-card">
+                <h3>🍳 Brunch (~11:30)</h3>
+                <select id="brunchSelect" class="module-select" onchange="updateMeal('brunch')"></select>
+                <div id="brunchText"></div>
+                <div class="macro-row" id="brunchMacros" style="justify-content: flex-start; display:flex;"></div>
+                <div class="ingredients-list" id="brunchIngredients"></div>
+            </div>
+            <div class="meal-card">
+                <h3>🍓 Ara Öğün (~16:00)</h3>
+                <select id="snackSelect" class="module-select" onchange="updateMeal('snack')"></select>
+                <div id="snackText"></div>
+                <div class="macro-row" id="snackMacros" style="justify-content: flex-start; display:flex;"></div>
+                <div class="ingredients-list" id="snackIngredients"></div>
+            </div>
+            <div class="meal-card">
+                <h3>🍲 Akşam Yemeği (~19:30)</h3>
+                <select id="dinnerSelect" class="module-select" onchange="updateMeal('dinner')"></select>
+                <div id="dinnerText"></div>
+                <div class="macro-row" id="dinnerMacros" style="justify-content: flex-start; display:flex;"></div>
+                <div class="ingredients-list" id="dinnerIngredients"></div>
+            </div>
         </div>
 
-        <div class="meal-card">
-            <h3>🍓 Bol Meyveli Ara Öğün (~16:00)</h3>
-            <select id="snackSelect" class="module-select" onchange="updateMeal('snack')"></select>
-            <p id="snackText"></p>
-            <div class="macro-row" id="snackMacros"></div>
-            <div class="ingredients-list" id="snackIngredients"></div>
-        </div>
-
-        <div class="meal-card">
-            <h3>🍆 Akşam Yemeği (~19:30)</h3>
-            <select id="dinnerSelect" class="module-select" onchange="updateMeal('dinner')"></select>
-            <p id="dinnerText"></p>
-            <div class="macro-row" id="dinnerMacros"></div>
-            <div class="ingredients-list" id="dinnerIngredients"></div>
+        <div class="tracker-section">
+            <span class="tracker-title">💧 Günlük Su İhtiyacın (2.5L)</span>
+            <div class="water-grid" id="waterGrid"></div>
+            <div class="gerbera-container" id="gerberaContainer" style="display:none;">
+                <div class="gerbera-flower" id="gerberaFlower" style="font-size:60px;">🌼</div>
+                <div style="font-weight:900; color:var(--primary); margin-top:5px;">Günün Çiçeği Açtı!</div>
+            </div>
+            <div class="supp-grid" style="margin-top:20px;">
+                <label class="supp-item" id="ironSuppLabel" style="display:none; color:var(--delete-red);">
+                    <input type="checkbox" id="supp_iron" onchange="saveSuppState()"> 🩸 Demir & Lacto.
+                </label>
+                <label class="supp-item"><input type="checkbox" id="supp_mag" onchange="saveSuppState()"> 🪨 Magnezyum</label>
+                <label class="supp-item"><input type="checkbox" id="supp_vit" onchange="saveSuppState()"> ☀️ D3/K2</label>
+            </div>
         </div>
 
         <div class="total-summary">
-            <h3>📊 Günlük Makro ve Kalori Bilançosu</h3>
+            <h3>⭐ Gün Sonu Bereketi</h3>
             <div class="macro-row" id="totalMacros"></div>
         </div>
-        
-        <div class="water-reminder">
-            💧 Günlük Hedef: 2.5 Litre Su + Magnezyum (Akşam) + D3/K2 Vitamini (Öğlen)
+    </div>
+</div>
+
+<div class="modal-overlay" id="genericModal" onclick="closeModal(event, 'genericModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header-fixed">
+            <button onclick="closeModal(true, 'genericModal')" class="modal-close">&times;</button>
+            <h3 class="modal-title" id="modalTitle">Başlık</h3>
+        </div>
+        <div class="modal-body" id="modalBody">İçerik</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="monthModal" onclick="closeModal(event, 'monthModal')">
+    <div class="modal-content" style="width:280px; text-align:center;" onclick="event.stopPropagation()">
+        <div class="modal-header-fixed" style="border:none; padding-bottom:0;">
+            <button onclick="closeModal(true, 'monthModal')" class="modal-close">&times;</button>
+            <h3 class="modal-title">Ay Seçimi</h3>
+        </div>
+        <div class="modal-body" style="padding-top:10px;">
+            <button class="month-btn" onclick="jumpToMonth(3)">Nisan 2026</button>
+            <button class="month-btn" onclick="jumpToMonth(4)">Mayıs 2026</button>
+            <button class="month-btn" onclick="jumpToMonth(5)">Haziran 2026</button>
+            <button class="month-btn" onclick="jumpToMonth(6)">Temmuz 2026</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- TEMA (DARK/LIGHT MODE) YÖNETİMİ ---
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeButton(savedTheme);
+    // --- EASTER EGG: UÇAN PERİLER ---
+    let fairyClicks = 0;
+    function triggerFairy() {
+        fairyClicks++;
+        if (fairyClicks === 7) {
+            spawnFairies();
+            fairyClicks = 0; 
+        }
+    }
+    function spawnFairies() {
+        for (let i = 0; i < 7; i++) {
+            let f = document.createElement('div');
+            f.innerHTML = "🧚‍♀️";
+            f.className = "floating-fairy";
+            f.style.left = (Math.random() * 80 + 10) + "%";
+            f.style.top = (Math.random() * 50 + 20) + "%";
+            f.style.animationDelay = (Math.random() * 1) + "s";
+            document.body.appendChild(f);
+            
+            // 3 saniye sonra süzülmeyi durdur, hızla yukarı fırlat
+            setTimeout(() => {
+                f.style.animation = "none";
+                f.style.transition = "top 1.2s cubic-bezier(0.5, 0, 1, 1), transform 1.2s";
+                
+                // Yıldız çıkarma efekti
+                let starInterval = setInterval(() => {
+                    let rect = f.getBoundingClientRect();
+                    if (rect.top < -50) { clearInterval(starInterval); return; }
+                    let star = document.createElement('div');
+                    star.className = "fairy-star";
+                    star.innerHTML = "✨";
+                    star.style.left = (rect.left + (Math.random() * 20 - 10)) + "px";
+                    star.style.top = (rect.top + 40) + "px";
+                    document.body.appendChild(star);
+                    setTimeout(() => star.remove(), 800);
+                }, 80);
+
+                setTimeout(() => { f.style.top = "-100px"; f.style.transform = "scale(1.5)"; }, 50);
+
+                setTimeout(() => { f.remove(); clearInterval(starInterval); }, 1500);
+            }, 3000 + (Math.random() * 1000));
+        }
     }
 
+    // --- EKSİKSİZ AÇIKLAMALAR VE VERİTABANI ---
+    const explanations = {
+        phases: { 
+            "Faz 1: Adaptasyon": "<strong>Vücutta Ne Oluyor?</strong> Yeni hap kutusuna yeni başladın. Vücuduna giren hormonlar sayesinde sistemin dengeye oturuyor.<br><br><strong>Ne Hissedeceksin?</strong> Enerjin yavaş yavaş yükseliyor. Vücudun yeni beslenme düzenine (~1450 kcal) ve yağ yakımına (trigliserit düşüşüne) alışmaya çalışıyor.<br><br><strong>Ne Yapıyoruz?</strong> Antrenmanlarda formumuzu oturtuyoruz, kendimizi çok fazla hırpalamadan kasları yeni düzene adapte ediyoruz.", 
+            "Faz 2: Hacim Artışı": "<strong>Vücutta Ne Oluyor?</strong> Haplar sayesinde hormonların tamamen sabit. Klasik kadın döngüsündeki o meşhur 'tatlı krizleri' veya 'PMS gerginlikleri' sende kesinlikle yok!<br><br><strong>Ne Hissedeceksin?</strong> İnsülin duyarlılığın harika, kendini tok ve çok güçlü hissedeceksin. Kasların büyümeye (hipertrofiye) aç.<br><br><strong>Ne Yapıyoruz?</strong> Ağırlıkları bir tık (%10 kadar) artırıyoruz. Kaslarımızı zorluyor, yediğimiz o güzel proteinleri doğrudan kas inşasına gönderiyoruz.", 
+            "Faz 3: Pik Kuvvet": "<strong>Vücutta Ne Oluyor?</strong> Hap kutusunun son haftasındasın. Vücudun anabolik (yapıcı) enerjinin zirvesinde.<br><br><strong>Ne Hissedeceksin?</strong> Fiziksel olarak ayın en güçlü olduğun haftası. Glikojen depoların antrenman için mükemmel çalışıyor.<br><br><strong>Ne Yapıyoruz?</strong> Sınırlarımızı zorluyoruz! En ağır kilolara giriyoruz. Yağ yakımı ve kas gelişimi için ayın en verimli eforunu bu hafta harcıyoruz.", 
+            "Faz 4: Deload (Onarım)": "<strong>Vücutta Ne Oluyor?</strong> Hap bitti, ara verdin. Dışarıdan aldığın hormon kesildiği için rahim duvarın dökülüyor ve kanaman (çekilme kanaması) başlıyor.<br><br><strong>Ne Hissedeceksin?</strong> Hormon eksikliğine bağlı yorgunluk, hafif ödem, kramp ve demir kaybı başlayacak. Vücut 'beni dinlendir' diyecek.<br><br><strong>Ne Yapıyoruz?</strong> Vücutla savaşmıyoruz! Ağırlıkları ciddi şekilde hafifletiyoruz. Magnezyum, demir (Oreferon) ve iyi uyku ile kanama stresini atlatıp, hücrelerimizi bir sonraki ayın döngüsü için tamir ediyoruz."
+        },
+        workouts: { 
+            "Ağırlık (Tüm Vücut)": "Tüm ana kas gruplarını (bacak, sırt, göğüs) tek seansta çalıştıran temel kuvvet antrenmanı.", 
+            "Grup Dersi (Kardiyo)": "Kalp ritmini yükselterek lipit (yağ) oksidasyonunu hızlandıran ve kondisyonu artıran hareketli seans.", 
+            "Dinlenme": "Aktif toparlanma günü. Kasların onarılması ve büyümesi için hayati önem taşır. Bol su içilmesi önerilir.", 
+            "Doğa Yürüyüşü": "LISS (Düşük Yoğunluklu Sabit Seviyeli) kardiyo. Hem mental rahatlama sağlar hem de eklemleri yormadan yağ yakımını destekler.", 
+            "Ağırlık (Hipertrofi)": "Kas liflerinde mikro yırtıklar oluşturarak kasın hacimsel olarak büyümesini hedefleyen 8-12 tekrarlı antrenman.", 
+            "Ağırlık (Maksimum Efor)": "1-5 tekrar aralığında, sinir sistemini zorlayan ve saf kuvvet artışını hedefleyen ağır antrenman.", 
+            "Ağırlık (Hafif)": "Kaslara sadece kan pompalayarak onarımı hızlandırmayı amaçlayan, eklemleri yormayan düşük ağırlıklı çalışma." 
+        }
+    };
+
+    const brunches = [ 
+        { name: "Yemek 1: Mozzarella & Avokado A", kcal: 450, pro: 25, fat: 30, carb: 20, text: "<p>1 adet tam haşlanmış yumurta. 1 tam top taze Mozzarella di Bufala. Üzerine taze sıkılmış limon suyu eklenmiş yarım avokado. Yanında 1 ince dilim tam buğday ekmeği, taze fesleğen ve çeri domates.</p>", ing: "• 1 tam yumurta (~50g)<br>• 1 top taze Mozzarella (~100g)<br>• Yarım avokado (~70g)<br>• 1 dilim tam buğday ekmeği (~30g)<br>• Serbest: Limon, fesleğen, domates" }, 
+        { name: "Yemek 2: Ricotta & Avokado B", kcal: 420, pro: 22, fat: 25, carb: 25, text: "<p>1 tatlı kaşığı zeytinyağında çevrilmiş bol domates/biberle 2 tam yumurtalı az yağlı menemen. Dünden kalan yarım avokado, 1 dilim çavdar ekmeği üzerine sürülecek. Yanında 3 dolu yemek kaşığı taze Ricotta.</p>", ing: "• 2 tam yumurta (~100g)<br>• Yarım avokado (~70g)<br>• 3 ymk kaşığı Ricotta peyniri (~60g)<br>• 1 dilim çavdar ekmeği (~30g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" }, 
+        { name: "Yemek 3: Robiola Keyfi", kcal: 380, pro: 18, fat: 22, carb: 30, text: "<p>1 çay kaşığı sızma zeytinyağı ile tavada pişirilmiş 1 adet tam yumurta. 30 gram Robiola peyniri. Yanında 2 ince dilim tam buğday ekmeği. 7 adet yeşil zeytin, taze nane, salatalık ve domates.</p>", ing: "• 1 tam yumurta (~50g)<br>• Robiola peyniri (30g)<br>• 2 ince dilim tam buğday ekmeği (~50g)<br>• 7 adet yeşil zeytin (~25g)<br>• 1 çay kaşığı sızma zeytinyağı (~3g)" }, 
+        { name: "Yemek 4: İtalyan Lor Omleti", kcal: 350, pro: 28, fat: 15, carb: 25, text: "<p>2 tam yumurta ve taze ıspanak yaprakları ile yağsız omlet. Yanında 4 yemek kaşığı İtalyan loru (Fiocchi di Latte). 1 dilim karabuğday ekmeği ve yarım kırmızı kapya biber.</p>", ing: "• 2 tam yumurta (~100g)<br>• 4 ymk kaşığı İtalyan loru (~80g)<br>• 1 dilim karabuğday ekmeği (~30g)<br>• 1 avuç taze ıspanak (~30g)<br>• Yarım kapya biber (~50g)" }, 
+        { name: "Yemek 5: Klasik Peynir Tabağı", kcal: 400, pro: 24, fat: 20, carb: 30, text: "<p>2 adet poşe yumurta. 2 kalın dilim az yağlı beyaz peynir. 10 adet siyah zeytin ve 2 ince dilim çavdar ekmeği. Yanında bol limonlu roka salatası.</p>", ing: "• 2 adet poşe yumurta (~100g)<br>• Az yağlı beyaz peynir (~60g)<br>• 2 ince dilim çavdar ekmeği (~50g)<br>• 10 adet siyah zeytin (~30g)<br>• Serbest: Roka, limon" }, 
+        { name: "Yemek 6: Hızlı Mozzarella Tost", kcal: 430, pro: 26, fat: 18, carb: 40, text: "<p>2 dilim tam buğday ekmeği arasına ince dilimlenmiş yarım top taze Mozzarella ve domates dilimleri ile yağsız tost. Yanında 1 adet tam haşlanmış yumurta ve söğüş salatalık.</p>", ing: "• 1 tam haşlanmış yumurta (~50g)<br>• Yarım top taze Mozzarella (~50g)<br>• 2 dilim tam buğday ekmeği (~60g)<br>• Serbest: Söğüş salatalık, domates" } 
+    ];
+    
+    const snacks = [ 
+        { name: "Yemek 1: Kırmızı Orman Şöleni", kcal: 250, pro: 15, fat: 8, carb: 30, text: "<p>1 büyük kase süzme yoğurt. İçerisine 1 büyük avuç dolusu taze çilek ve yaban mersini. Üzerine 1 yemek kaşığı chia tohumu.</p>", ing: "• Süzme yoğurt (~150g)<br>• Çilek ve yaban mersini karışımı (~80g)<br>• Chia tohumu (1 ymk kaşığı / ~10g)" }, 
+        { name: "Yemek 2: Tropikal Kıyır", kcal: 320, pro: 12, fat: 18, carb: 28, text: "<p>1 büyük kase normal ev yoğurdu. İçerisine 2 kalın dilim taze ananas küp küp doğranacak. 3 adet tam ceviz içi kırılarak eklenecek.</p>", ing: "• Normal ev yoğurdu (~150g)<br>• Taze ananas (~100g)<br>• 3 adet tam ceviz içi (~15g)" }, 
+        { name: "Yemek 3: Elma & Badem İkilisi", kcal: 220, pro: 5, fat: 15, carb: 20, text: "<p>1 büyük boy yeşil elma ince ince dilimlenecek ve bol tarçın serpilecek. Yanında 15 adet kavrulmamış, çiğ badem.</p>", ing: "• 1 büyük yeşil elma (~150g)<br>• 15 adet çiğ badem (~18g)<br>• Serbest: Toz tarçın" }, 
+        { name: "Yemek 4: Muzlu Kinoa Enerjisi", kcal: 350, pro: 20, fat: 5, carb: 55, text: "<p>1 kase yüksek proteinli hazır yoğurt (Hipro vb.). İçerisine 3 yemek kaşığı haşlanmış kinoa ve 1 adet yerli muz dilimlenip katılacak.</p>", ing: "• Yüksek proteinli yoğurt (1 kutu / ~150g)<br>• Haşlanmış kinoa (3 ymk kaşığı / ~45g)<br>• 1 orta boy yerli muz (~100g)" }, 
+        { name: "Yemek 5: Meyve Salatası Tabağı", kcal: 300, pro: 10, fat: 15, carb: 35, text: "<p>1 adet kivi, 1 dilim portakal ve 3-4 adet çilekle meyve salatası. Yanında 15 adet çiğ kaju fıstığı ve 3 yemek kaşığı sade yoğurt.</p>", ing: "• Kivi, portakal, çilek karışımı (~150g)<br>• 15 adet çiğ kaju fıstığı (~18g)<br>• Sade yoğurt (3 ymk kaşığı / ~60g)" }, 
+        { name: "Yemek 6: Armut & Keten Tohumu", kcal: 260, pro: 15, fat: 9, carb: 32, text: "<p>1 kase süzme yoğurt. İçine 1 tam armut dilimlenecek. Omega-3 için 1 tatlı kaşığı taze çekilmiş keten tohumu ve tarçın eklenecek.</p>", ing: "• Süzme yoğurt (~150g)<br>• 1 tam armut (~150g)<br>• Taze çekilmiş keten tohumu (1 tatlı kaşığı / ~5g)" } 
+    ];
+    
+    const dinners = [ 
+        { name: "Yemek 1: Tavada Patlıcanlı Tavuk Sote", kcal: 550, pro: 50, fat: 15, carb: 55, text: "<p>200 gram tavuk göğsü küp küp doğranacak. 1 adet patlıcan, yeşil biber ve domates ile tavada sotelenip tavukla birleştirilecek. Yanında 5 yemek kaşığı sade bulgur pilavı.</p>", ing: "• Çiğ tavuk göğsü (200g)<br>• Pişmiş sade bulgur pilavı (100g)<br>• Patlıcan, domates, biber sote (~150g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" }, 
+        { name: "Yemek 2: Tencerede İtalyan Bolognese", kcal: 600, pro: 45, fat: 18, carb: 65, text: "<p>200 gram yağsız dana kıyma ve bol domates püresi ile tencerede pişirilmiş Bolognese sos. 5 yemek kaşığı tam buğday penne makarnanın üzerine eklenecek. Yanında roka salatası.</p>", ing: "• Yağsız dana kıyma (200g çiğ)<br>• Tam buğday penne makarna (~50g)<br>• Domates püresi - Passata (~100g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" }, 
+        { name: "Yemek 3: Haftanın Fırın Yemeği", kcal: 520, pro: 48, fat: 22, carb: 30, text: "<p>Fırın tepsisinde kalın yuvarlak patlıcan dilimleri arasına kavrulmuş 200 gram yağsız dana kıyma eklenip fırınlanacak. Yanında 1 büyük kase cacık.</p>", ing: "• Yağsız dana kıyma (200g çiğ)<br>• 1-2 adet patlıcan (~200g)<br>• Domates salçası/sosu (~50g)<br>• Normal yoğurt (~200g)" }, 
+        { name: "Yemek 4: Tavada Pratik Izgara Köfte", kcal: 580, pro: 50, fat: 25, carb: 35, text: "<p>6-8 adet ev yapımı anne köftesi (yağsız kıymadan, ekmeksiz). Yanında ocakta közlenmiş patlıcan ile yapılmış sarımsaklı yoğurtlu meze.</p>", ing: "• Ev yapımı köfte (200g çiğ)<br>• Süzme/Normal yoğurt (~150g)<br>• Közlenmiş patlıcan (~100g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" }, 
+        { name: "Yemek 5: Tencerede Yeşil Mercimek", kcal: 480, pro: 30, fat: 12, carb: 60, text: "<p>10-12 yemek kaşığı yeşil mercimek yemeği (az zeytinyağlı). Yanında 1 büyük kase cacık ve elma sirkeli mevsim salatası.</p>", ing: "• Pişmiş yeşil mercimek (200g)<br>• Normal yoğurt (~200g)<br>• Zeytinyağı (10g)<br>• Serbest: Mevsim yeşillikleri" }, 
+        { name: "Yemek 6: Limonlu Izgara Tavuk", kcal: 450, pro: 48, fat: 15, carb: 30, text: "<p>200 gram ızgara tavuk göğsü (limon suyu marineli). Yanında tencerede domates ve zeytinyağı ile hafif ateşte pişmiş taze fasulye yemeği.</p>", ing: "• Çiğ tavuk göğsü (200g)<br>• Taze fasulye yemeği (~200g)<br>• Zeytinyağı (~5g)" }, 
+        { name: "Yemek 7: Asya/İtalyan Sebzeli Wok", kcal: 550, pro: 48, fat: 12, carb: 60, text: "<p>200 gram jülyen tavuk göğsü. Jülyen doğranmış kabak, havuç ve kapya biber ile wok tavada çevrilerek pişirilecek. Yanında 4-5 yemek kaşığı sade tam buğday makarna.</p>", ing: "• Çiğ tavuk göğsü (200g)<br>• Tam buğday makarna (~40g çiğ)<br>• Wok sebze karışımı (~150g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" } 
+    ];
+
+    // --- DİNAMİK TAKVİM ÜRETİCİ ---
+    const planData = [];
+    const startDate = new Date(2026, 3, 12); 
+    const endDate = new Date(2026, 6, 1);    
+    const phaseNames = ["Faz 1: Adaptasyon", "Faz 2: Hacim Artışı", "Faz 3: Pik Kuvvet", "Faz 4: Deload (Onarım)"];
+    const monthNamesTr = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    
+    function getWorkout(d, p) {
+        if(d===1||d===4) return "Grup Dersi (Kardiyo)"; 
+        if(d===2||d===5) return "Dinlenme"; 
+        if(d===6) return "Doğa Yürüyüşü";
+        return ["Ağırlık (Tüm Vücut)","Ağırlık (Hipertrofi)","Ağırlık (Maksimum Efor)","Ağırlık (Hafif)"][p];
+    }
+
+    let loopDate = new Date(startDate); 
+    let dayCount = 0;
+    
+    while(loopDate <= endDate) {
+        let pI = Math.floor((dayCount % 28) / 7);
+        planData.push({ 
+            dateObj: new Date(loopDate), 
+            phase: phaseNames[pI], 
+            workout: getWorkout(loopDate.getDay(), pI), 
+            b: dayCount % 6, 
+            s: (dayCount * 2) % 6, 
+            d: dayCount % 7 
+        });
+        loopDate.setDate(loopDate.getDate() + 1); 
+        dayCount++;
+    }
+
+    let currentDayIndex = 0;
+    let checkedState = JSON.parse(localStorage.getItem('damla_diet_checks')) || {};
+    let waterState = JSON.parse(localStorage.getItem('damla_water_state')) || {};
+    let suppState = JSON.parse(localStorage.getItem('damla_supp_state')) || {};
+
+    // --- BAŞLATMA ---
+    function init() {
+        populateDropdowns();
+        let todayIdx = getTodayIndex();
+        renderDay(todayIdx);
+        initTheme();
+    }
+
+    function getTodayIndex() {
+        const today = new Date(); 
+        const idx = planData.findIndex(d => 
+            d.dateObj.getDate() === today.getDate() && 
+            d.dateObj.getMonth() === today.getMonth() && 
+            d.dateObj.getFullYear() === today.getFullYear()
+        );
+        return idx !== -1 ? idx : 0; 
+    }
+
+    function populateDropdowns() {
+        brunches.forEach((m, i) => document.getElementById("brunchSelect").add(new Option(m.name, i)));
+        snacks.forEach((m, i) => document.getElementById("snackSelect").add(new Option(m.name, i)));
+        dinners.forEach((m, i) => document.getElementById("dinnerSelect").add(new Option(m.name, i)));
+    }
+
+    // --- TAKVİM ÇİZİMİ ---
+    function renderCalendar() {
+        const grid = document.getElementById("calendarGrid");
+        const cD = planData[currentDayIndex];
+        document.getElementById("calendarMonthTitle").innerText = `${monthNamesTr[cD.dateObj.getMonth()]} ${cD.dateObj.getFullYear()} ▾`;
+        
+        grid.innerHTML = ""; 
+        ["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"].forEach(d => {
+            const e = document.createElement("div"); 
+            e.className="cal-day-name"; 
+            e.innerText=d; 
+            grid.appendChild(e);
+        });
+        
+        let startOffset = new Date(cD.dateObj.getFullYear(), cD.dateObj.getMonth(), 1).getDay() - 1;
+        if(startOffset === -1) startOffset = 6; 
+        
+        for(let i=0; i<startOffset; i++) {
+            grid.appendChild(document.createElement("div"));
+        }
+        
+        planData.forEach((d, i) => {
+            if(d.dateObj.getMonth() === cD.dateObj.getMonth()) {
+                const e = document.createElement("div"); 
+                e.className = `cal-day ${i === currentDayIndex ? 'active' : ''}`;
+                e.innerText = d.dateObj.getDate(); 
+                e.onclick = () => renderDay(i);
+                
+                if(waterState[i] === 8) {
+                    e.innerHTML += '<div class="cal-water-mark">🌱</div>';
+                }
+                if(i % 7 === 0) {
+                    e.innerHTML += '<div class="cal-cart-mark">🛒</div>';
+                }
+                grid.appendChild(e);
+            }
+        });
+    }
+
+    function renderDay(index) {
+        currentDayIndex = index; 
+        const d = planData[index];
+        
+        document.getElementById("phaseBadgeText").innerText = d.phase;
+        document.getElementById("workoutBadgeText").innerText = "🏃‍♀️ " + d.workout;
+        document.getElementById("shopListBtn").style.display = (index % 7 === 0) ? 'block' : 'none';
+        
+        document.getElementById("brunchSelect").value = d.b;
+        document.getElementById("snackSelect").value = d.s;
+        document.getElementById("dinnerSelect").value = d.d;
+        
+        updateMeal('all'); 
+        renderWaterTracker(); 
+        renderSuppTracker(); 
+        renderCalendar();
+    }
+
+    function changeDay(step) {
+        let nIdx = currentDayIndex + step;
+        if(nIdx >= 0 && nIdx < planData.length) {
+            renderDay(nIdx);
+        }
+    }
+
+    // --- YAPAY ZEKA DESTEKLİ ALIŞVERİŞ BİRLEŞTİRİCİ ---
+    const ingredientDict = [
+        { match: /yumurta/i, name: "Yumurta", unit: "adet" },
+        { match: /avokado/i, name: "Avokado", unit: "adet" },
+        { match: /mozzarella/i, name: "Taze Mozzarella", unit: "g" },
+        { match: /ricotta/i, name: "Ricotta Peyniri", unit: "g" },
+        { match: /robiola/i, name: "Robiola Peyniri", unit: "g" },
+        { match: /italyan loru/i, name: "İtalyan Loru", unit: "g" },
+        { match: /beyaz peynir/i, name: "Beyaz Peynir", unit: "g" },
+        { match: /tam buğday ekmeği/i, name: "Tam Buğday Ekmeği", unit: "dilim" },
+        { match: /çavdar ekmeği/i, name: "Çavdar Ekmeği", unit: "dilim" },
+        { match: /karabuğday ekmeği/i, name: "Karabuğday Ekmeği", unit: "dilim" },
+        { match: /zeytinyağı/i, name: "Zeytinyağı", unit: "g" },
+        { match: /yeşil zeytin/i, name: "Yeşil Zeytin", unit: "adet" },
+        { match: /siyah zeytin/i, name: "Siyah Zeytin", unit: "adet" },
+        { match: /ıspanak/i, name: "Taze Ispanak", unit: "g" },
+        { match: /kapya biber|yeşil biber/i, name: "Biber Çeşitleri", unit: "adet" },
+        { match: /süzme yoğurt/i, name: "Süzme Yoğurt", unit: "g" },
+        { match: /ev yoğurdu|normal yoğurt/i, name: "Normal Yoğurt", unit: "g" },
+        { match: /proteinli yoğurt/i, name: "Yüksek Proteinli Yoğurt", unit: "kutu" },
+        { match: /çilek|yaban mersini|orman meyve/i, name: "Orman Meyveleri", unit: "g" },
+        { match: /chia tohumu/i, name: "Chia Tohumu", unit: "g" },
+        { match: /keten tohumu/i, name: "Keten Tohumu", unit: "g" },
+        { match: /ananas/i, name: "Taze Ananas", unit: "g" },
+        { match: /ceviz/i, name: "Ceviz İçi", unit: "adet" },
+        { match: /yeşil elma/i, name: "Yeşil Elma", unit: "adet" },
+        { match: /badem/i, name: "Çiğ Badem", unit: "adet" },
+        { match: /kinoa/i, name: "Kinoa", unit: "g" },
+        { match: /muz/i, name: "Muz", unit: "adet" },
+        { match: /kivi|portakal/i, name: "Kivi & Portakal", unit: "g" },
+        { match: /kaju/i, name: "Çiğ Kaju", unit: "adet" },
+        { match: /armut/i, name: "Armut", unit: "adet" },
+        { match: /tavuk/i, name: "Tavuk Göğsü", unit: "g" },
+        { match: /kıyma/i, name: "Yağsız Dana Kıyma", unit: "g" },
+        { match: /bulgur/i, name: "Sade Bulgur", unit: "g" },
+        { match: /makarna|penne/i, name: "Tam Buğday Makarna", unit: "g" },
+        { match: /patlıcan/i, name: "Patlıcan", unit: "g" }, 
+        { match: /domates püresi|passata/i, name: "Domates Püresi", unit: "g" },
+        { match: /salça/i, name: "Domates Salçası", unit: "g" },
+        { match: /köfte/i, name: "Ev Yapımı Köfte (Kıymadan)", unit: "g" },
+        { match: /yeşil mercimek/i, name: "Yeşil Mercimek", unit: "g" },
+        { match: /taze fasulye/i, name: "Taze Fasulye", unit: "g" },
+        { match: /kabak|havuç|wok/i, name: "Karışık Wok Sebze", unit: "g" }
+    ];
+
+    function aggregateShoppingList(rawItems) {
+        let agg = {};
+        
+        rawItems.forEach(item => {
+            if(item.toLowerCase().includes("serbest")) return; 
+            
+            let foundCat = null;
+            for(let cat of ingredientDict) {
+                if(cat.match.test(item)) { foundCat = cat; break; }
+            }
+            
+            let qty = 1;
+            let unit = foundCat ? foundCat.unit : "";
+            
+            let mGrams = item.match(/\(~?(\d+)\s*g/i);
+            if(mGrams) {
+                qty = parseInt(mGrams[1]);
+                unit = "g"; 
+            } else {
+                let numMatch = item.match(/^(\d+(?:\.\d+)?)/) || item.match(/(\d+)/);
+                if(numMatch) qty = parseFloat(numMatch[1]);
+                if(item.toLowerCase().includes('yarım')) qty = 0.5;
+            }
+
+            let catName = foundCat ? foundCat.name : item.replace(/~?\d+g/g, '').replace(/[()•]/g, '').trim();
+
+            if(!agg[catName]) agg[catName] = { total: 0, unit: unit };
+            agg[catName].total += qty;
+            if(unit === 'g') agg[catName].unit = 'g';
+        });
+
+        let h = '<div id="shoppingChecklist">';
+        Object.keys(agg).sort().forEach((key, idx) => {
+            let val = agg[key].total;
+            let unit = agg[key].unit;
+            let displayUnit = (unit === "adet" || unit === "porsiyon" || !unit) ? "" : unit;
+            let text = `${val}${displayUnit ? ' ' + displayUnit : ''} - ${key}`;
+            
+            h += `
+                <div class="shopping-row" id="shop-row-${idx}">
+                    <label class="shopping-item-check">
+                        <input type="checkbox"> 
+                        <span class="shop-item-text">${text}</span>
+                    </label>
+                    <button class="delete-item-btn" onclick="removeShoppingRow(${idx})">❌</button>
+                </div>`;
+        });
+        h += '</div><button class="copy-btn" onclick="copyShoppingListText()">📋 Kalanları Kopyala</button>';
+        return h;
+    }
+
+    function openShoppingList() {
+        let allIngredients = [];
+        for (let i = currentDayIndex; i < Math.min(currentDayIndex + 7, planData.length); i++) {
+            const d = planData[i];
+            [brunches[d.b], snacks[d.s], dinners[d.d]].forEach(meal => {
+                if(meal && meal.ing) {
+                    let items = meal.ing.split('<br>').map(it => it.replace('•', '').trim());
+                    allIngredients.push(...items);
+                }
+            });
+        }
+        showModal("🛒 Düzenlenebilir Pazar Listesi", aggregateShoppingList(allIngredients));
+    }
+
+    function removeShoppingRow(id) {
+        const row = document.getElementById(`shop-row-${id}`);
+        row.style.opacity = '0';
+        setTimeout(() => row.remove(), 250);
+    }
+
+    function copyShoppingListText() {
+        let text = "🛒 Haftalık Pazar Listesi:\n\n";
+        document.querySelectorAll(".shopping-row .shop-item-text").forEach(span => {
+            text += "⬜ " + span.innerText + "\n";
+        });
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Liste kopyalandı! WhatsApp'a yapıştırabilirsin.");
+        });
+    }
+
+    // --- ÖĞÜN GÜNCELLEME VE MACRO SİSTEMİ ---
+    function updateMeal(type) {
+        const d = planData[currentDayIndex];
+        let bIdx = parseInt(document.getElementById("brunchSelect").value);
+        let sIdx = parseInt(document.getElementById("snackSelect").value);
+        let dIdx = parseInt(document.getElementById("dinnerSelect").value);
+
+        if (type === 'brunch' || type === 'all') {
+            let txt = brunches[bIdx].text;
+            if (currentDayIndex % 2 === 0) {
+                txt = `<div class="iron-highlight-box">
+                         <span class="iron-icon">🩸</span>
+                         <div>GÜNLÜK İKSİR ZAMANI:<br><span style="color:var(--delete-red);">Oreferon + Lactoferrin İçilecek!</span></div>
+                       </div>` + txt;
+            }
+            document.getElementById("brunchText").innerHTML = txt;
+            document.getElementById("brunchMacros").innerHTML = getMacroHTML(brunches[bIdx].kcal, brunches[bIdx].pro, brunches[bIdx].fat, brunches[bIdx].carb);
+            document.getElementById("brunchIngredients").innerHTML = formatIngredientsToCheckboxes(brunches[bIdx].ing, 'brunch');
+        }
+        if (type === 'snack' || type === 'all') {
+            document.getElementById("snackText").innerHTML = snacks[sIdx].text;
+            document.getElementById("snackMacros").innerHTML = getMacroHTML(snacks[sIdx].kcal, snacks[sIdx].pro, snacks[sIdx].fat, snacks[sIdx].carb);
+            document.getElementById("snackIngredients").innerHTML = formatIngredientsToCheckboxes(snacks[sIdx].ing, 'snack');
+        }
+        if (type === 'dinner' || type === 'all') {
+            document.getElementById("dinnerText").innerHTML = dinners[dIdx].text;
+            document.getElementById("dinnerMacros").innerHTML = getMacroHTML(dinners[dIdx].kcal, dinners[dIdx].pro, dinners[dIdx].fat, dinners[dIdx].carb);
+            document.getElementById("dinnerIngredients").innerHTML = formatIngredientsToCheckboxes(dinners[dIdx].ing, 'dinner');
+        }
+
+        let totalKcal = brunches[bIdx].kcal + snacks[sIdx].kcal + dinners[dIdx].kcal;
+        let totalPro = brunches[bIdx].pro + snacks[sIdx].pro + dinners[dIdx].pro;
+        let totalFat = brunches[bIdx].fat + snacks[sIdx].fat + dinners[dIdx].fat;
+        let totalCarb = brunches[bIdx].carb + snacks[sIdx].carb + dinners[dIdx].carb;
+
+        document.getElementById("totalMacros").innerHTML = getMacroHTML(totalKcal, totalPro, totalFat, totalCarb);
+    }
+
+    function formatIngredientsToCheckboxes(ingString, mealType) {
+        let items = ingString.split('<br>');
+        let html = '<strong>⚖️ Tartı & Gramaj:</strong><div>';
+        items.forEach((item, idx) => {
+            let clean = item.replace('• ', '').trim();
+            let id = `d${currentDayIndex}_${mealType}_${idx}`;
+            let isChecked = checkedState[id] ? 'checked' : '';
+            html += `
+                <label class="ingredient-item ${isChecked ? 'checked' : ''}">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheck(this, '${id}')">
+                    <span>${clean}</span>
+                </label>`;
+        });
+        html += '</div>';
+        return html;
+    }
+
+    function toggleCheck(checkbox, id) {
+        checkedState[id] = checkbox.checked;
+        localStorage.setItem('damla_diet_checks', JSON.stringify(checkedState));
+        checkbox.parentElement.classList.toggle('checked', checkbox.checked);
+    }
+
+    function getMacroHTML(kcal, pro, fat, carb) {
+        return `
+            <div class="macro-badge m-kcal">🔥 ${kcal} Kcal</div>
+            <div class="macro-badge m-pro">🥩 ${pro}g Protein</div>
+            <div class="macro-badge m-fat">🥑 ${fat}g Yağ</div>
+            <div class="macro-badge m-carb">🌾 ${carb}g Karb</div>
+        `;
+    }
+
+    // --- MODALLAR VE TRACKERLAR ---
+    function showModal(title, body) {
+        document.getElementById("modalTitle").innerHTML = title;
+        document.getElementById("modalBody").innerHTML = body;
+        document.getElementById("genericModal").style.display = "flex";
+    }
+
+    function closeModal(force = false, id) {
+        if(force === true || event.target.id === id) {
+            document.getElementById(id).style.display = "none";
+        }
+    }
+
+    function openModal(type) {
+        const d = planData[currentDayIndex];
+        if(type === 'phase') {
+            showModal("📖 " + d.phase, explanations.phases[d.phase] || "Açıklama bulunamadı.");
+        } else {
+            showModal("🏃‍♀️ Günün Antrenmanı: " + d.workout, explanations.workouts[d.workout] || "Açıklama bulunamadı.");
+        }
+    }
+
+    function openMonthModal() {
+        document.getElementById("monthModal").style.display = "flex";
+    }
+
+    function jumpToMonth(monthIndex) {
+        let idx = planData.findIndex(d => d.dateObj.getMonth() === monthIndex);
+        if(idx !== -1) {
+            renderDay(idx);
+            closeModal(true, 'monthModal');
+        }
+    }
+
+    function renderWaterTracker() {
+        const grid = document.getElementById("waterGrid");
+        grid.innerHTML = "";
+        const wCount = waterState[currentDayIndex] || 0;
+        for (let i = 1; i <= 8; i++) {
+            const drop = document.createElement("span");
+            drop.className = `water-drop ${i <= wCount ? 'active' : ''}`;
+            drop.innerHTML = "💧";
+            drop.onclick = () => toggleWater(i);
+            grid.appendChild(drop);
+        }
+        checkGerbera(wCount);
+    }
+
+    function toggleWater(num) {
+        waterState[currentDayIndex] = num;
+        localStorage.setItem('damla_water_state', JSON.stringify(waterState));
+        renderWaterTracker();
+        renderCalendar(); 
+    }
+
+    function checkGerbera(wCount) {
+        const container = document.getElementById("gerberaContainer");
+        const flower = document.getElementById("gerberaFlower");
+        if(wCount === 8) {
+            container.style.display = "flex";
+            const hues = [0, 50, 100, 150, 200, 250, 300];
+            const rh = hues[currentDayIndex % hues.length];
+            flower.style.filter = `hue-rotate(${rh}deg) drop-shadow(0 4px 4px rgba(0,0,0,0.2))`;
+        } else {
+            container.style.display = "none";
+        }
+    }
+
+    function renderSuppTracker() {
+        const s = suppState[currentDayIndex] || { mag: false, vit: false, iron: false };
+        document.getElementById("supp_mag").checked = s.mag || false;
+        document.getElementById("supp_vit").checked = s.vit || false;
+        
+        const ironLabel = document.getElementById("ironSuppLabel");
+        const ironCheck = document.getElementById("supp_iron");
+        if (currentDayIndex % 2 === 0) {
+            ironLabel.style.display = "flex";
+            ironCheck.checked = s.iron || false;
+        } else {
+            ironLabel.style.display = "none";
+        }
+    }
+
+    function saveSuppState() {
+        suppState[currentDayIndex] = {
+            mag: document.getElementById("supp_mag").checked,
+            vit: document.getElementById("supp_vit").checked,
+            iron: document.getElementById("supp_iron") ? document.getElementById("supp_iron").checked : false
+        };
+        localStorage.setItem('damla_supp_state', JSON.stringify(suppState));
+    }
+
+    function initTheme() {
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        updateThemeButton(theme);
+    }
+    
     function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateThemeButton(newTheme);
@@ -277,232 +904,7 @@
         btn.innerText = theme === 'dark' ? '☀️ Gündüz' : '🌙 Gece';
     }
 
-    // --- VERİTABANI: Yemekler, Makrolar ve Gramajlı İçerikler ---
-    const brunches = [
-        { name: "Yemek 1: Mozzarella & Avokado A", kcal: 450, pro: 25, fat: 30, carb: 20, 
-          text: "1 adet tam haşlanmış yumurta. 1 tam top taze Mozzarella di Bufala. Üzerine taze sıkılmış limon suyu eklenmiş yarım avokado. Yanında 1 ince dilim tam buğday ekmeği, taze fesleğen ve çeri domates.", 
-          ing: "• 1 tam yumurta (~50g)<br>• 1 top taze Mozzarella (~100g)<br>• Yarım avokado (~70g net)<br>• 1 dilim tam buğday ekmeği (~30g)<br>• Serbest: Limon, fesleğen, domates" },
-        { name: "Yemek 2: Ricotta & Avokado B", kcal: 420, pro: 22, fat: 25, carb: 25, 
-          text: "1 tatlı kaşığı zeytinyağında çevrilmiş bol domates/biberle 2 tam yumurtalı az yağlı menemen. Dünden kalan yarım avokado, 1 dilim çavdar ekmeği üzerine sürülecek. Yanında 3 dolu yemek kaşığı taze Ricotta.", 
-          ing: "• 2 tam yumurta (~100g)<br>• Yarım avokado (~70g net)<br>• 3 ymk kaşığı Ricotta peyniri (~60g)<br>• 1 dilim çavdar ekmeği (~30g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" },
-        { name: "Yemek 3: Robiola Keyfi", kcal: 380, pro: 18, fat: 22, carb: 30, 
-          text: "1 çay kaşığı sızma zeytinyağı ile tavada pişirilmiş 1 adet tam yumurta. 30 gram Robiola peyniri. Yanında 2 ince dilim tam buğday ekmeği. 7 adet yeşil zeytin, taze nane, salatalık ve domates.", 
-          ing: "• 1 tam yumurta (~50g)<br>• Robiola peyniri (30g)<br>• 2 ince dilim tam buğday ekmeği (~50g)<br>• 7 adet yeşil zeytin (~25g)<br>• 1 çay kaşığı sızma zeytinyağı (~3g)" },
-        { name: "Yemek 4: İtalyan Lor Omleti", kcal: 350, pro: 28, fat: 15, carb: 25, 
-          text: "2 tam yumurta ve taze ıspanak yaprakları ile yağsız omlet. Yanında 4 yemek kaşığı İtalyan loru (Fiocchi di Latte). 1 dilim karabuğday ekmeği ve yarım kırmızı kapya biber.", 
-          ing: "• 2 tam yumurta (~100g)<br>• 4 ymk kaşığı İtalyan loru (~80g)<br>• 1 dilim karabuğday ekmeği (~30g)<br>• 1 avuç taze ıspanak (~30g)<br>• Yarım kapya biber (~50g)" },
-        { name: "Yemek 5: Klasik Peynir Tabağı", kcal: 400, pro: 24, fat: 20, carb: 30, 
-          text: "2 adet poşe yumurta. 2 kalın dilim az yağlı beyaz peynir. 10 adet siyah zeytin ve 2 ince dilim çavdar ekmeği. Yanında bol limonlu roka salatası.", 
-          ing: "• 2 adet poşe yumurta (~100g)<br>• Az yağlı beyaz peynir (~60g)<br>• 2 ince dilim çavdar ekmeği (~50g)<br>• 10 adet siyah zeytin (~30g)<br>• Serbest: Roka, limon" },
-        { name: "Yemek 6: Hızlı Mozzarella Tost", kcal: 430, pro: 26, fat: 18, carb: 40, 
-          text: "2 dilim tam buğday ekmeği arasına ince dilimlenmiş yarım top taze Mozzarella ve domates dilimleri ile yağsız tost. Yanında 1 adet tam haşlanmış yumurta ve söğüş salatalık.", 
-          ing: "• 1 tam haşlanmış yumurta (~50g)<br>• Yarım top taze Mozzarella (~50g)<br>• 2 dilim tam buğday ekmeği (~60g)<br>• Serbest: Söğüş salatalık, domates" }
-    ];
-
-    const snacks = [
-        { name: "Yemek 1: Kırmızı Orman Şöleni", kcal: 250, pro: 15, fat: 8, carb: 30, 
-          text: "1 büyük kase süzme yoğurt. İçerisine 1 büyük avuç dolusu taze çilek ve yaban mersini. Üzerine 1 yemek kaşığı chia tohumu.", 
-          ing: "• Süzme yoğurt (~150g)<br>• Çilek ve yaban mersini karışımı (~80g)<br>• Chia tohumu (1 ymk kaşığı / ~10g)" },
-        { name: "Yemek 2: Tropikal Kıyır", kcal: 320, pro: 12, fat: 18, carb: 28, 
-          text: "1 büyük kase normal ev yoğurdu. İçerisine 2 kalın dilim taze ananas küp küp doğranacak. 3 adet tam ceviz içi kırılarak eklenecek.", 
-          ing: "• Normal ev yoğurdu (~150g)<br>• Taze ananas (~100g)<br>• 3 adet tam ceviz içi (~15g)" },
-        { name: "Yemek 3: Elma & Badem İkilisi", kcal: 220, pro: 5, fat: 15, carb: 20, 
-          text: "1 büyük boy yeşil elma ince ince dilimlenecek ve bol tarçın serpilecek. Yanında 15 adet kavrulmamış, çiğ badem.", 
-          ing: "• 1 büyük yeşil elma (~150g)<br>• 15 adet çiğ badem (~18g)<br>• Serbest: Toz tarçın" },
-        { name: "Yemek 4: Muzlu Kinoa Enerjisi", kcal: 350, pro: 20, fat: 5, carb: 55, 
-          text: "1 kase yüksek proteinli hazır yoğurt (Hipro vb.). İçerisine 3 yemek kaşığı haşlanmış kinoa ve 1 adet yerli muz dilimlenip katılacak.", 
-          ing: "• Yüksek proteinli yoğurt (1 kutu / ~150g)<br>• Haşlanmış kinoa (3 ymk kaşığı / ~45g)<br>• 1 orta boy yerli muz (~100g)" },
-        { name: "Yemek 5: Meyve Salatası Tabağı", kcal: 300, pro: 10, fat: 15, carb: 35, 
-          text: "1 adet kivi, 1 dilim portakal ve 3-4 adet çilekle meyve salatası. Yanında 15 adet çiğ kaju fıstığı ve 3 yemek kaşığı sade yoğurt.", 
-          ing: "• Kivi, portakal, çilek karışımı (~150g)<br>• 15 adet çiğ kaju fıstığı (~18g)<br>• Sade yoğurt (3 ymk kaşığı / ~60g)" },
-        { name: "Yemek 6: Armut & Keten Tohumu", kcal: 260, pro: 15, fat: 9, carb: 32, 
-          text: "1 kase süzme yoğurt. İçine 1 tam armut dilimlenecek. Omega-3 için 1 tatlı kaşığı taze çekilmiş keten tohumu ve tarçın eklenecek.", 
-          ing: "• Süzme yoğurt (~150g)<br>• 1 tam armut (~150g)<br>• Taze çekilmiş keten tohumu (1 tatlı kaşığı / ~5g)" }
-    ];
-
-    const dinners = [
-        { name: "Yemek 1: Tavada Patlıcanlı Tavuk Sote", kcal: 550, pro: 50, fat: 15, carb: 55, 
-          text: "200 gram tavuk göğsü küp küp doğranacak. 1 adet patlıcan, yeşil biber ve domates ile tavada sotelenip tavukla birleştirilecek. Yanında 5 yemek kaşığı sade bulgur pilavı.", 
-          ing: "• Çiğ tavuk göğsü (200g - pişince ~150g kalır)<br>• Pişmiş sade bulgur pilavı (5 ymk kaşığı / ~100g)<br>• Patlıcan, domates, biber sote (~150g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" },
-        { name: "Yemek 2: Tencerede İtalyan Bolognese", kcal: 600, pro: 45, fat: 18, carb: 65, 
-          text: "200 gram yağsız dana kıyma ve bol domates püresi ile tencerede pişirilmiş Bolognese sos. 5 yemek kaşığı tam buğday penne makarnanın üzerine eklenecek. Yanında roka salatası.", 
-          ing: "• Yağsız dana kıyma (200g çiğ)<br>• Tam buğday penne makarna (5 ymk kaşığı çiğ ~50g / pişmiş ~120g)<br>• Domates püresi - Passata (~100g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" },
-        { name: "Yemek 3: Haftanın Fırın Yemeği (Patlıcan Kulesi)", kcal: 520, pro: 48, fat: 22, carb: 30, 
-          text: "Fırın tepsisinde kalın yuvarlak patlıcan dilimleri arasına kavrulmuş 200 gram yağsız dana kıyma eklenip fırınlanacak. Yanında 1 büyük kase cacık.", 
-          ing: "• Yağsız dana kıyma (200g çiğ)<br>• 1-2 adet patlıcan (~200g)<br>• Domates salçası/sosu (~50g)<br>• Cacık için normal yoğurt (~200g)" },
-        { name: "Yemek 4: Tavada Pratik Izgara Köfte", kcal: 580, pro: 50, fat: 25, carb: 35, 
-          text: "6-8 adet ev yapımı anne köftesi (yağsız kıymadan, ekmeksiz). Yanında ocakta közlenmiş patlıcan ile yapılmış sarımsaklı yoğurtlu meze.", 
-          ing: "• Ev yapımı köfte (200g çiğ yağsız dana kıymadan)<br>• Süzme/Normal yoğurt (~150g)<br>• Közlenmiş patlıcan (~100g)<br>• 1 tatlı kaşığı zeytinyağı (pişirme için)" },
-        { name: "Yemek 5: Tencerede Yeşil Mercimek", kcal: 480, pro: 30, fat: 12, carb: 60, 
-          text: "10-12 yemek kaşığı yeşil mercimek yemeği (az zeytinyağlı). Yanında 1 büyük kase cacık ve elma sirkeli mevsim salatası.", 
-          ing: "• Pişmiş yeşil mercimek yemeği (10-12 ymk kaşığı / ~200g)<br>• Cacık için normal yoğurt (~200g)<br>• Yemek ve salata için toplam zeytinyağı (2 tatlı kaşığı / ~10g)<br>• Serbest: Mevsim yeşillikleri" },
-        { name: "Yemek 6: Limonlu Izgara Tavuk & Taze Fasulye", kcal: 450, pro: 48, fat: 15, carb: 30, 
-          text: "200 gram ızgara tavuk göğsü (limon suyu marineli). Yanında tencerede domates ve zeytinyağı ile hafif ateşte pişmiş taze fasulye yemeği.", 
-          ing: "• Çiğ tavuk göğsü (200g)<br>• Zeytinyağlı taze fasulye yemeği (~200g porsiyon)<br>• (Fasulye yemeğinden gelen zeytinyağı ~5-10g)" },
-        { name: "Yemek 7: Asya/İtalyan Sebzeli Wok", kcal: 550, pro: 48, fat: 12, carb: 60, 
-          text: "200 gram jülyen tavuk göğsü. Jülyen doğranmış kabak, havuç ve kapya biber ile wok tavada çevrilerek pişirilecek. Yanında 4-5 yemek kaşığı sade tam buğday makarna.", 
-          ing: "• Çiğ tavuk göğsü (200g)<br>• Sade tam buğday makarna (4-5 ymk kaşığı çiğ ~40g / pişmiş ~100g)<br>• Wok sebze karışımı (Kabak, havuç, biber ~150g)<br>• 1 tatlı kaşığı zeytinyağı (~5g)" }
-    ];
-
-    // --- GÜNLÜK PLAN ---
-    const planData = [
-        { date: "12 Nisan Pazar", phase: "Faz 1: Adaptasyon", workout: "Ağırlık (Tüm Vücut)", b: 2, s: 0, d: 0 },
-        { date: "13 Nisan Pzt", phase: "Faz 1: Adaptasyon", workout: "Grup Dersi (Kardiyo)", b: 1, s: 1, d: 4 },
-        { date: "14 Nisan Salı", phase: "Faz 1: Adaptasyon", workout: "Dinlenme", b: 0, s: 2, d: 3 },
-        { date: "15 Nisan Çar", phase: "Faz 1: Adaptasyon", workout: "Ağırlık (Tüm Vücut)", b: 3, s: 3, d: 5 },
-        { date: "16 Nisan Per", phase: "Faz 1: Adaptasyon", workout: "Grup Dersi (Kardiyo)", b: 0, s: 4, d: 1 },
-        { date: "17 Nisan Cuma", phase: "Faz 1: Adaptasyon", workout: "Dinlenme", b: 1, s: 5, d: 6 },
-        { date: "18 Nisan Cmt", phase: "Faz 1: Adaptasyon", workout: "Doğa Yürüyüşü", b: 5, s: 0, d: 2 },
-        { date: "19 Nisan Pazar", phase: "Faz 2: Hacim Artışı", workout: "Ağırlık (Hipertrofi)", b: 4, s: 1, d: 0 },
-        { date: "20 Nisan Pzt", phase: "Faz 2: Hacim Artışı", workout: "Grup Dersi (Kardiyo)", b: 0, s: 2, d: 4 },
-        { date: "21 Nisan Salı", phase: "Faz 2: Hacim Artışı", workout: "Dinlenme", b: 1, s: 3, d: 3 },
-        { date: "22 Nisan Çar", phase: "Faz 2: Hacim Artışı", workout: "Ağırlık (Hipertrofi)", b: 2, s: 4, d: 5 },
-        { date: "23 Nisan Per", phase: "Faz 2: Hacim Artışı", workout: "Grup Dersi (Kardiyo)", b: 3, s: 5, d: 1 },
-        { date: "24 Nisan Cuma", phase: "Faz 2: Hacim Artışı", workout: "Dinlenme", b: 0, s: 0, d: 6 },
-        { date: "25 Nisan Cmt", phase: "Faz 2: Hacim Artışı", workout: "Doğa Yürüyüşü", b: 1, s: 1, d: 2 },
-        { date: "26 Nisan Pazar", phase: "Faz 3: Pik Kuvvet", workout: "Ağırlık (Maksimum Efor)", b: 4, s: 2, d: 0 },
-        { date: "27 Nisan Pzt", phase: "Faz 3: Pik Kuvvet", workout: "Grup Dersi (Kardiyo)", b: 5, s: 3, d: 4 },
-        { date: "28 Nisan Salı", phase: "Faz 3: Pik Kuvvet", workout: "Dinlenme", b: 0, s: 4, d: 3 },
-        { date: "29 Nisan Çar", phase: "Faz 3: Pik Kuvvet", workout: "Ağırlık (Maksimum Efor)", b: 1, s: 5, d: 5 },
-        { date: "30 Nisan Per", phase: "Faz 3: Pik Kuvvet", workout: "Grup Dersi (Kardiyo)", b: 2, s: 0, d: 1 },
-        { date: "1 Mayıs Cuma", phase: "Faz 3: Pik Kuvvet", workout: "Dinlenme", b: 3, s: 1, d: 6 },
-        { date: "2 Mayıs Cmt", phase: "Faz 3: Pik Kuvvet", workout: "Doğa Yürüyüşü", b: 0, s: 2, d: 2 },
-        { date: "3 Mayıs Pazar", phase: "Faz 4: Deload (Onarım)", workout: "Ağırlık (Hafif)", b: 1, s: 3, d: 0 },
-        { date: "4 Mayıs Pzt", phase: "Faz 4: Deload (Onarım)", workout: "Grup Dersi (Kardiyo)", b: 4, s: 4, d: 4 },
-        { date: "5 Mayıs Salı", phase: "Faz 4: Deload (Onarım)", workout: "Dinlenme", b: 5, s: 5, d: 3 },
-        { date: "6 Mayıs Çar", phase: "Faz 4: Deload (Onarım)", workout: "Ağırlık (Hafif)", b: 0, s: 0, d: 5 },
-        { date: "7 Mayıs Per", phase: "Faz 4: Deload (Onarım)", workout: "Grup Dersi (Kardiyo)", b: 1, s: 1, d: 1 },
-        { date: "8 Mayıs Cuma", phase: "Faz 4: Deload (Onarım)", workout: "Dinlenme", b: 2, s: 2, d: 6 },
-        { date: "9 Mayıs Cmt", phase: "Faz 4: Deload (Onarım)", workout: "Doğa Yürüyüşü", b: 3, s: 3, d: 2 },
-        { date: "10 Mayıs Pazar", phase: "Yeni Döngü", workout: "Ağırlık (Tüm Vücut)", b: 0, s: 4, d: 0 },
-        { date: "11 Mayıs Pzt", phase: "Yeni Döngü", workout: "Grup Dersi (Kardiyo)", b: 1, s: 5, d: 4 }
-    ];
-
-    let currentDayIndex = 0;
-
-    // Arayüz Elementlerini Seç
-    const selectDay = document.getElementById("daySelector");
-    const selectBrunch = document.getElementById("brunchSelect");
-    const selectSnack = document.getElementById("snackSelect");
-    const selectDinner = document.getElementById("dinnerSelect");
-
-    // Otomatik Günü Bul
-    function getTodayIndex() {
-        const today = new Date();
-        const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
-        const dateString = `${today.getDate()} ${months[today.getMonth()]}`; 
-        
-        // planData içindeki date alanında (örn: "14 Nisan Salı") dateString ("14 Nisan") geçiyor mu kontrol et
-        const foundIndex = planData.findIndex(d => d.date.includes(dateString));
-        return foundIndex !== -1 ? foundIndex : 0; // Bulamazsa ilk güne döner
-    }
-
-    // Select kutularını Doldur
-    function populateDropdowns() {
-        planData.forEach((d, i) => { selectDay.add(new Option(`Gün ${i + 1}: ${d.date}`, i)); });
-        brunches.forEach((m, i) => { selectBrunch.add(new Option(m.name, i)); });
-        snacks.forEach((m, i) => { selectSnack.add(new Option(m.name, i)); });
-        dinners.forEach((m, i) => { selectDinner.add(new Option(m.name, i)); });
-    }
-
-    // Makro Badge HTML Üretici
-    function getMacroHTML(kcal, pro, fat, carb) {
-        return `
-            <div class="macro-badge m-kcal">🔥 ${kcal} Kcal</div>
-            <div class="macro-badge m-pro">🥩 ${pro}g Protein</div>
-            <div class="macro-badge m-fat">🥑 ${fat}g Yağ</div>
-            <div class="macro-badge m-carb">🌾 ${carb}g Karb</div>
-        `;
-    }
-
-    // İçerikleri Checkbox Haline Getirici
-    function formatIngredientsToCheckboxes(ingString) {
-        let items = ingString.split('<br>');
-        let html = '<strong>Tartı & Gramaj Bilgisi:</strong><div>';
-        items.forEach((item) => {
-            let cleanItem = item.replace('• ', '').trim();
-            html += `
-                <label class="ingredient-item">
-                    <input type="checkbox" onchange="this.parentElement.classList.toggle('checked')">
-                    <span>${cleanItem}</span>
-                </label>`;
-        });
-        html += '</div>';
-        return html;
-    }
-
-    // Günü Ekrana Çiz
-    function renderDay(index) {
-        const data = planData[index];
-        selectDay.value = index;
-        
-        document.getElementById("phaseBadge").innerText = data.phase;
-        document.getElementById("workoutBadge").innerText = "🏋️ " + data.workout;
-        
-        // O günün varsayılan yemeklerini seçili hale getir
-        selectBrunch.value = data.b;
-        selectSnack.value = data.s;
-        selectDinner.value = data.d;
-
-        updateMeal('all'); 
-
-        document.getElementById("prevBtn").disabled = index === 0;
-        document.getElementById("nextBtn").disabled = index === planData.length - 1;
-    }
-
-    // Öğün Değiştiğinde Metinleri, Makroları, Gramajları ve Toplamı Güncelle
-    function updateMeal(type) {
-        let bIdx = parseInt(selectBrunch.value);
-        let sIdx = parseInt(selectSnack.value);
-        let dIdx = parseInt(selectDinner.value);
-
-        if (type === 'brunch' || type === 'all') {
-            let bText = brunches[bIdx].text;
-            if (currentDayIndex % 2 === 0) {
-                bText += "<br><span class='supp-highlight'>💊 KLİNİK TAKVİYE: Kahvaltıyla Birlikte Oreferon + Lactoferrin İçilecek</span>";
-            }
-            document.getElementById("brunchText").innerHTML = bText;
-            document.getElementById("brunchMacros").innerHTML = getMacroHTML(brunches[bIdx].kcal, brunches[bIdx].pro, brunches[bIdx].fat, brunches[bIdx].carb);
-            document.getElementById("brunchIngredients").innerHTML = formatIngredientsToCheckboxes(brunches[bIdx].ing);
-        }
-        if (type === 'snack' || type === 'all') {
-            document.getElementById("snackText").innerText = snacks[sIdx].text;
-            document.getElementById("snackMacros").innerHTML = getMacroHTML(snacks[sIdx].kcal, snacks[sIdx].pro, snacks[sIdx].fat, snacks[sIdx].carb);
-            document.getElementById("snackIngredients").innerHTML = formatIngredientsToCheckboxes(snacks[sIdx].ing);
-        }
-        if (type === 'dinner' || type === 'all') {
-            document.getElementById("dinnerText").innerText = dinners[dIdx].text;
-            document.getElementById("dinnerMacros").innerHTML = getMacroHTML(dinners[dIdx].kcal, dinners[dIdx].pro, dinners[dIdx].fat, dinners[dIdx].carb);
-            document.getElementById("dinnerIngredients").innerHTML = formatIngredientsToCheckboxes(dinners[dIdx].ing);
-        }
-
-        // Toplam Bilanço Hesapla
-        let totalKcal = brunches[bIdx].kcal + snacks[sIdx].kcal + dinners[dIdx].kcal;
-        let totalPro = brunches[bIdx].pro + snacks[sIdx].pro + dinners[dIdx].pro;
-        let totalFat = brunches[bIdx].fat + snacks[sIdx].fat + dinners[dIdx].fat;
-        let totalCarb = brunches[bIdx].carb + snacks[sIdx].carb + dinners[dIdx].carb;
-
-        document.getElementById("totalMacros").innerHTML = getMacroHTML(totalKcal, totalPro, totalFat, totalCarb);
-    }
-
-    function changeDay(step) {
-        let newIndex = currentDayIndex + step;
-        if(newIndex >= 0 && newIndex < planData.length) {
-            currentDayIndex = newIndex;
-            renderDay(currentDayIndex);
-        }
-    }
-
-    function jumpToDay() {
-        currentDayIndex = parseInt(selectDay.value);
-        renderDay(currentDayIndex);
-    }
-
-    // Başlat
-    initTheme();
-    populateDropdowns();
-    currentDayIndex = getTodayIndex(); // Bugünü otomatik bul
-    renderDay(currentDayIndex);
+    window.onload = init;
 </script>
 
 </body>
