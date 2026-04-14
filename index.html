@@ -15,7 +15,29 @@
             --macro-fat: #D00000;
             --macro-carb: #F4A261;
             --macro-kcal: #2D6A4F;
+            --ing-bg: #E9ECEF;
+            --ing-border: #6C757D;
+            --ing-text: #495057;
+            --ing-title: #343A40;
+            --nav-bg: #EDF2F4;
+            --nav-border: #DFE3E6;
         }
+
+        /* Dark Mode Renk Paleti */
+        :root[data-theme="dark"] {
+            --primary: #528a63; 
+            --secondary: #ff7315; 
+            --bg: #121212;
+            --card-bg: #1E1E1E;
+            --text: #E0E0E0;
+            --ing-bg: #2A2A2A;
+            --ing-border: #4A7C59;
+            --ing-text: #B0B0B0;
+            --ing-title: #FFFFFF;
+            --nav-bg: #2C2C2C;
+            --nav-border: #3D3D3D;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
@@ -24,6 +46,7 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
         }
         .app-container {
             max-width: 650px;
@@ -32,29 +55,41 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             overflow: hidden;
+            transition: background-color 0.3s;
         }
         .header {
             background: var(--primary);
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
         }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .header p {
-            margin: 5px 0 0 0;
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 14px;
-            opacity: 0.9;
+            transition: background 0.3s;
         }
+        .theme-toggle:hover { background: rgba(255,255,255,0.3); }
+
         .nav-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            background: #EDF2F4;
-            border-bottom: 2px solid #DFE3E6;
+            background: var(--nav-bg);
+            border-bottom: 2px solid var(--nav-border);
+            transition: background-color 0.3s, border-color 0.3s;
         }
         button {
             background: var(--primary);
@@ -74,125 +109,95 @@
             border: 1px solid #ccc;
             font-weight: bold;
             color: var(--text);
+            background-color: var(--card-bg);
             max-width: 50%;
         }
         .content { padding: 20px; }
         .badges {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
         }
         .badge {
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
+            padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white;
         }
         .badge-phase { background: var(--secondary); }
         .badge-workout { background: #118AB2; }
         
         .meal-card {
-            background: #F8F9FA;
+            background: var(--card-bg);
             border-left: 5px solid var(--primary);
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 0 10px 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .meal-card h3 {
-            margin: 0 0 10px 0;
-            color: var(--primary);
-            font-size: 16px;
-        }
+        .meal-card h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 16px; }
         .module-select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-family: inherit;
-            background-color: white;
-            font-weight: bold;
-            color: var(--text);
+            width: 100%; padding: 8px; margin-bottom: 12px; border-radius: 6px;
+            border: 1px solid #ccc; font-family: inherit; background-color: var(--card-bg);
+            font-weight: bold; color: var(--text);
         }
-        .meal-card p {
-            margin: 0 0 12px 0;
-            font-size: 14.5px;
-            line-height: 1.6;
-            color: #333;
-        }
-        .macro-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .macro-badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-        }
+        .meal-card p { margin: 0 0 12px 0; font-size: 14.5px; line-height: 1.6; color: var(--text); opacity: 0.9; }
+        .macro-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        .macro-badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; color: white; }
         .m-pro { background: var(--macro-pro); }
         .m-fat { background: var(--macro-fat); }
         .m-carb { background: var(--macro-carb); }
         .m-kcal { background: var(--macro-kcal); }
         
         .ingredients-list {
-            background-color: #E9ECEF;
+            background-color: var(--ing-bg);
             padding: 10px;
             border-radius: 6px;
-            font-size: 13px;
-            color: #495057;
-            border-left: 3px solid #6C757D;
+            font-size: 14px;
+            color: var(--ing-text);
+            border-left: 3px solid var(--ing-border);
+            transition: background-color 0.3s;
         }
-        .ingredients-list strong {
-            color: #343A40;
-            display: block;
-            margin-bottom: 4px;
+        .ingredients-list strong { color: var(--ing-title); display: block; margin-bottom: 8px; }
+
+        /* Checkbox Stilleri */
+        .ingredient-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            cursor: pointer;
+            line-height: 1.4;
+            transition: opacity 0.2s;
+        }
+        .ingredient-item input {
+            margin-right: 10px;
+            margin-top: 3px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+        .ingredient-item.checked {
+            text-decoration: line-through;
+            opacity: 0.5;
         }
 
         .total-summary {
-            background: #EAE2B7;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
-            border: 2px solid #D4A373;
+            background: #EAE2B7; padding: 15px; border-radius: 10px; margin-top: 20px;
+            text-align: center; border: 2px solid #D4A373;
         }
-        .total-summary h3 {
-            margin: 0 0 10px 0;
-            color: #2B2D42;
-        }
-        .total-summary .macro-row {
-            justify-content: center;
-        }
-        .total-summary .macro-badge {
-            font-size: 14px;
-            padding: 6px 12px;
-        }
+        [data-theme="dark"] .total-summary { background: #3A3022; border-color: #8C6A4A; }
+        .total-summary h3 { margin: 0 0 10px 0; color: #2B2D42; }
+        [data-theme="dark"] .total-summary h3 { color: #E0E0E0; }
+        .total-summary .macro-row { justify-content: center; }
+        .total-summary .macro-badge { font-size: 14px; padding: 6px 12px; }
 
         .supp-highlight {
-            display: inline-block;
-            background-color: #ffe8d6;
-            color: #d00000;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 8px;
-            border: 1px solid #ffb5a7;
+            display: inline-block; background-color: #ffe8d6; color: #d00000;
+            padding: 3px 8px; border-radius: 5px; font-weight: bold; margin-top: 8px; border: 1px solid #ffb5a7;
         }
+        [data-theme="dark"] .supp-highlight { background-color: #4A1C1C; color: #FFB5A7; border-color: #8A3030; }
+        
         .water-reminder {
-            text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            background: #E0FBFC;
-            border-radius: 10px;
-            font-weight: bold;
-            color: #0077B6;
+            text-align: center; margin-top: 20px; padding: 15px; background: #E0FBFC;
+            border-radius: 10px; font-weight: bold; color: #0077B6;
         }
+        [data-theme="dark"] .water-reminder { background: #0A2E3F; color: #66B2FF; }
     </style>
 </head>
 <body>
@@ -201,6 +206,7 @@
     <div class="header">
         <h1>Dr. Canan İnteraktif Takip</h1>
         <p>Lipit Düşürücü & Hipertrofi Odaklı Biyokimya Mutfağı</p>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙 Gece</button>
     </div>
     
     <div class="nav-controls">
@@ -251,6 +257,26 @@
 </div>
 
 <script>
+    // --- TEMA (DARK/LIGHT MODE) YÖNETİMİ ---
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeButton(newTheme);
+    }
+
+    function updateThemeButton(theme) {
+        const btn = document.querySelector('.theme-toggle');
+        btn.innerText = theme === 'dark' ? '☀️ Gündüz' : '🌙 Gece';
+    }
+
     // --- VERİTABANI: Yemekler, Makrolar ve Gramajlı İçerikler ---
     const brunches = [
         { name: "Yemek 1: Mozzarella & Avokado A", kcal: 450, pro: 25, fat: 30, carb: 20, 
@@ -360,6 +386,17 @@
     const selectSnack = document.getElementById("snackSelect");
     const selectDinner = document.getElementById("dinnerSelect");
 
+    // Otomatik Günü Bul
+    function getTodayIndex() {
+        const today = new Date();
+        const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+        const dateString = `${today.getDate()} ${months[today.getMonth()]}`; 
+        
+        // planData içindeki date alanında (örn: "14 Nisan Salı") dateString ("14 Nisan") geçiyor mu kontrol et
+        const foundIndex = planData.findIndex(d => d.date.includes(dateString));
+        return foundIndex !== -1 ? foundIndex : 0; // Bulamazsa ilk güne döner
+    }
+
     // Select kutularını Doldur
     function populateDropdowns() {
         planData.forEach((d, i) => { selectDay.add(new Option(`Gün ${i + 1}: ${d.date}`, i)); });
@@ -376,6 +413,22 @@
             <div class="macro-badge m-fat">🥑 ${fat}g Yağ</div>
             <div class="macro-badge m-carb">🌾 ${carb}g Karb</div>
         `;
+    }
+
+    // İçerikleri Checkbox Haline Getirici
+    function formatIngredientsToCheckboxes(ingString) {
+        let items = ingString.split('<br>');
+        let html = '<strong>Tartı & Gramaj Bilgisi:</strong><div>';
+        items.forEach((item) => {
+            let cleanItem = item.replace('• ', '').trim();
+            html += `
+                <label class="ingredient-item">
+                    <input type="checkbox" onchange="this.parentElement.classList.toggle('checked')">
+                    <span>${cleanItem}</span>
+                </label>`;
+        });
+        html += '</div>';
+        return html;
     }
 
     // Günü Ekrana Çiz
@@ -410,17 +463,17 @@
             }
             document.getElementById("brunchText").innerHTML = bText;
             document.getElementById("brunchMacros").innerHTML = getMacroHTML(brunches[bIdx].kcal, brunches[bIdx].pro, brunches[bIdx].fat, brunches[bIdx].carb);
-            document.getElementById("brunchIngredients").innerHTML = `<strong>Tartı & Gramaj Bilgisi:</strong>${brunches[bIdx].ing}`;
+            document.getElementById("brunchIngredients").innerHTML = formatIngredientsToCheckboxes(brunches[bIdx].ing);
         }
         if (type === 'snack' || type === 'all') {
             document.getElementById("snackText").innerText = snacks[sIdx].text;
             document.getElementById("snackMacros").innerHTML = getMacroHTML(snacks[sIdx].kcal, snacks[sIdx].pro, snacks[sIdx].fat, snacks[sIdx].carb);
-            document.getElementById("snackIngredients").innerHTML = `<strong>Tartı & Gramaj Bilgisi:</strong>${snacks[sIdx].ing}`;
+            document.getElementById("snackIngredients").innerHTML = formatIngredientsToCheckboxes(snacks[sIdx].ing);
         }
         if (type === 'dinner' || type === 'all') {
             document.getElementById("dinnerText").innerText = dinners[dIdx].text;
             document.getElementById("dinnerMacros").innerHTML = getMacroHTML(dinners[dIdx].kcal, dinners[dIdx].pro, dinners[dIdx].fat, dinners[dIdx].carb);
-            document.getElementById("dinnerIngredients").innerHTML = `<strong>Tartı & Gramaj Bilgisi:</strong>${dinners[dIdx].ing}`;
+            document.getElementById("dinnerIngredients").innerHTML = formatIngredientsToCheckboxes(dinners[dIdx].ing);
         }
 
         // Toplam Bilanço Hesapla
@@ -446,7 +499,9 @@
     }
 
     // Başlat
+    initTheme();
     populateDropdowns();
+    currentDayIndex = getTodayIndex(); // Bugünü otomatik bul
     renderDay(currentDayIndex);
 </script>
 
